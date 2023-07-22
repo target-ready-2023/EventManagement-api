@@ -1,9 +1,7 @@
 package com.target.eventmanagementsystem.models;
 
 import jakarta.persistence.*;
-import lombok.Data;
 
-@Data
 @Entity
 public class EventParticipants {
     @Id
