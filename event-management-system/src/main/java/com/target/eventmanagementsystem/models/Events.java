@@ -1,16 +1,16 @@
 package com.target.eventmanagementsystem.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Events {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String title;
@@ -24,6 +24,8 @@ public class Events {
     private String event_type;
 
     private String register_last_date;
+
+
 
     public Events() {
 
@@ -84,4 +86,6 @@ public class Events {
     public void setRegister_last_date(String register_last_date) {
         this.register_last_date = register_last_date;
     }
-}
+
+
+  }
