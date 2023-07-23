@@ -5,14 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="849c120b-b82f-4872-bfdf-f1d0b02a1d33" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/models/EventParticipantKey.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/controller/EventUserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/controller/EventUserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/models/EventParticipants.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/models/EventParticipants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/models/EventParticipantKey.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/models/EventParticipantKey.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/repository/EventParRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/repository/EventParRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/service/EventUserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/service/EventUserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/event-management-system/target/classes/com/target/eventmanagementsystem/controller/EventUserController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/event-management-system/target/classes/com/target/eventmanagementsystem/service/EventUserService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-management-system/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-management-system/target/classes/com/target/eventmanagementsystem/service/EventUserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/target/classes/com/target/eventmanagementsystem/service/EventUserService.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
