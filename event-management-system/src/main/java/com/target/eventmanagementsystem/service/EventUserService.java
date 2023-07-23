@@ -22,9 +22,10 @@ public class EventUserService {
     private UserRepository userRepository;
 
     @Autowired
-    public EventUserService(EventParRepository eventRepository, EventRepository eventRepository1) {
+    public EventUserService(EventParRepository eventRepository,UserRepository userRepository, EventRepository eventRepository1) {
         this.eventRepository = eventRepository;
-        this.eventRepository1 = eventRepository1;// Initialize userRepository
+        this.eventRepository1 = eventRepository1;
+        this.userRepository=userRepository;
     }
 
     public boolean registerParticipantForEvent(Integer eventId, Integer userId) {
@@ -43,8 +44,6 @@ public class EventUserService {
             eventParticipant.setId(key); // Set the composite key
             eventParticipant.setUser(user); // Set the participant
             eventParticipant.setEvent(event); // Set the event
-
-            // Set the result (if needed, otherwise, leave it as null)
             eventParticipant.setResult(null);
 
             eventRepository.save(eventParticipant);
@@ -58,22 +57,19 @@ public class EventUserService {
 
 
     public boolean deregisterParticipantFromEvent(Integer eventId, Integer userId) {
-        Optional<EventParticipants> eventOptional = eventRepository.findById(new EventParticipantKey(eventId, userId));
+        Optional<EventParticipants> eventOptional = eventRepository.findByEventIdAndUserId(eventId, userId);
+
         if (eventOptional.isPresent()) {
             EventParticipants event = eventOptional.get();
-
-
-            if (isUserRegistered(event, userId)) {
-                event.setId(null);
-                event.setEvent(null);
-                event.setUser(null);
-                eventRepository.save(event);
-                return true;
-            }
+            eventRepository.delete(event);
+            return true;
         }
 
         return false;
     }
+
+
+
 
     private boolean isUserRegistered(EventParticipants event, Integer userId) {
         return event.getId().getUserId().equals(userId);
