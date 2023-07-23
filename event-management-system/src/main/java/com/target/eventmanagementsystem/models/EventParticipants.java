@@ -6,30 +6,24 @@ import java.util.Set;
 
 @Entity
 public class EventParticipants {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @EmbeddedId
+    private EventParticipantKey id;
 
     @ManyToOne
+    @MapsId("userId") // Maps the userId attribute in the composite key
     @JoinColumn(name = "user_id")
     private Users user;
 
-
     @ManyToOne
+    @MapsId("eventId") // Maps the eventId attribute in the composite key
     @JoinColumn(name = "event_id")
     private Events event;
 
-
-
-    private Integer result; // Initially null, updated after the end of the event
-
-    // Getters and setters
-
-    public Long getId() {
+    public EventParticipantKey getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(EventParticipantKey id) {
         this.id = id;
     }
 
@@ -56,5 +50,9 @@ public class EventParticipants {
     public void setResult(Integer result) {
         this.result = result;
     }
+
+    private Integer result;
+    // Getters and setters
+
 
 }

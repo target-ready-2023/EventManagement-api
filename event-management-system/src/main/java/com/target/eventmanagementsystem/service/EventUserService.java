@@ -1,9 +1,12 @@
 package com.target.eventmanagementsystem.service;
 
+import com.target.eventmanagementsystem.models.EventParticipantKey;
 import com.target.eventmanagementsystem.models.EventParticipants;
 import com.target.eventmanagementsystem.models.Events;
 import com.target.eventmanagementsystem.models.Users;
 import com.target.eventmanagementsystem.repository.EventParRepository;
+import com.target.eventmanagementsystem.repository.EventRepository;
+import com.target.eventmanagementsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,42 +14,69 @@ import java.util.Optional;
 
 @Service
 public class EventUserService {
-
+    @Autowired
     private EventParRepository eventRepository;
+    @Autowired
+    private EventRepository eventRepository1;
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
-    public EventUserService(EventParRepository eventRepository) {
+    public EventUserService(EventParRepository eventRepository, EventRepository eventRepository1) {
         this.eventRepository = eventRepository;
+        this.eventRepository1 = eventRepository1;// Initialize userRepository
     }
 
-    public boolean registerParticipantForEvent(int eventId, Users participant) {
-        Optional<EventParticipants> eventOptional = eventRepository.findById(eventId);
-        if (eventOptional.isPresent()) {
-            EventParticipants event = eventOptional.get();
-            // Additional checks can be added here before registering the participant
-            event.setUser(participant);
-            eventRepository.save(event);
+    public boolean registerParticipantForEvent(Integer eventId, Integer userId) {
+        Optional<Events> eventOptional = eventRepository1.findById(eventId);
+        Optional<Users> userOptional = userRepository.findById(userId);
+
+        if (eventOptional.isPresent() && userOptional.isPresent()) {
+            Events event = eventOptional.get();
+            Users user = userOptional.get();
+
+            EventParticipantKey key = new EventParticipantKey();
+            key.setEventId(eventId);
+            key.setUserId(userId);
+
+            EventParticipants eventParticipant = new EventParticipants();
+            eventParticipant.setId(key); // Set the composite key
+            eventParticipant.setUser(user); // Set the participant
+            eventParticipant.setEvent(event); // Set the event
+
+            // Set the result (if needed, otherwise, leave it as null)
+            eventParticipant.setResult(null);
+
+            eventRepository.save(eventParticipant);
+
             return true;
         }
+
         return false;
     }
 
-    public boolean deregisterParticipantFromEvent(int eventId, Users participant) {
-        Optional<EventParticipants> eventOptional = eventRepository.findById(eventId);
+
+
+    public boolean deregisterParticipantFromEvent(Integer eventId, Integer userId) {
+        Optional<EventParticipants> eventOptional = eventRepository.findById(new EventParticipantKey(eventId, userId));
         if (eventOptional.isPresent()) {
             EventParticipants event = eventOptional.get();
-            // Additional checks can be added here before deregistering the participant
-            if (isUserRegistered(event, participant)) {
-                event.setUser(null); // Remove the user from the EventParticipants entity
+
+
+            if (isUserRegistered(event, userId)) {
+                event.setId(null);
+                event.setEvent(null);
+                event.setUser(null);
                 eventRepository.save(event);
                 return true;
             }
         }
+
         return false;
     }
 
-    // Check if a given user is registered for an event
-    private boolean isUserRegistered(EventParticipants event, Users user) {
-        return event.getUser() != null && event.getUser().equals(user);
+    private boolean isUserRegistered(EventParticipants event, Integer userId) {
+        return event.getId().getUserId().equals(userId);
     }
+
 }

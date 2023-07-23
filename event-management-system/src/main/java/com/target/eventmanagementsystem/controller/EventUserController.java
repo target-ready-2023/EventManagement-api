@@ -3,7 +3,6 @@ import com.target.eventmanagementsystem.models.EventParticipants;
 import com.target.eventmanagementsystem.models.Events;
 import com.target.eventmanagementsystem.models.Users;
 import com.target.eventmanagementsystem.service.EventUserService;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +22,7 @@ public class EventUserController {
     // Register a participant for an event
     @PostMapping("/{eventId}/register")
     public ResponseEntity<String> registerParticipant(@PathVariable int eventId, @RequestBody Users participant) {
-        boolean isRegistered = eventService.registerParticipantForEvent(eventId, participant);
+        boolean isRegistered = eventService.registerParticipantForEvent(eventId, participant.getId());
         if (isRegistered) {
             return ResponseEntity.status(HttpStatus.CREATED).body("Participant registered successfully.");
         } else {
@@ -34,7 +33,7 @@ public class EventUserController {
     // Deregister a participant from an event
     @PostMapping("/{eventId}/deregister")
     public ResponseEntity<String> deregisterParticipant(@PathVariable int eventId, @RequestBody Users participant) {
-        boolean isDeregistered = eventService.deregisterParticipantFromEvent(eventId, participant);
+        boolean isDeregistered = eventService.deregisterParticipantFromEvent(eventId, participant.getId());
         if (isDeregistered) {
             return ResponseEntity.ok("Participant deregistered successfully.");
         } else {
