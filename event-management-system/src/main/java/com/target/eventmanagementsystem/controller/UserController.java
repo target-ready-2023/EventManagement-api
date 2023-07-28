@@ -1,6 +1,7 @@
 package com.target.eventmanagementsystem.controller;
 
 import com.target.eventmanagementsystem.models.Users;
+import com.target.eventmanagementsystem.payloads.ApiResponse;
 import com.target.eventmanagementsystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,8 +19,10 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/getAllUsers")
-    public List<Users> list(){
-       return userService.listAall();
+    public ResponseEntity<Object> list(){
+
+        return ApiResponse.apiResponse("Requested events details",HttpStatus.OK,userService.listAall());
+//       return userService.listAall();
     }
 
     @PostMapping("/addUser")
@@ -29,14 +32,17 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<Users> get(@PathVariable Integer id){
-        try{
-            Users users = userService.get(id);
-            return new ResponseEntity<Users>(users, HttpStatus.OK);
-        }
-        catch (NoSuchElementException e){
-            return new ResponseEntity<Users>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Object> get(@PathVariable Integer id){
+
+        return ApiResponse.apiResponse("Requested events details",HttpStatus.OK,userService.get(id));
+
+//        try{
+//            Users users = userService.get(id);
+//            return new ResponseEntity<Users>(users, HttpStatus.OK);
+//        }
+//        catch (NoSuchElementException e){
+//            return new ResponseEntity<Users>(HttpStatus.NOT_FOUND);
+//        }
     }
 
     @PutMapping("/user/{id}")

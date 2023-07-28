@@ -1,6 +1,7 @@
 package com.target.eventmanagementsystem.controller;
 
 import com.target.eventmanagementsystem.models.Events;
+import com.target.eventmanagementsystem.payloads.ApiResponse;
 import com.target.eventmanagementsystem.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,8 +19,11 @@ public class EventController {
     private EventService eventService;
 
     @GetMapping("/getAllEvents")
-    public List<Events> list(){
-        return eventService.listall();
+    public ResponseEntity<Object> list(){
+
+        return ApiResponse.apiResponse("Requested events details",HttpStatus.OK,eventService.listall());
+
+//        return eventService.listall();
     }
 
     @PostMapping("/addEvents")
@@ -29,13 +33,16 @@ public class EventController {
     }
 
     @GetMapping("/event/{id}")
-    public ResponseEntity<Events> get(@PathVariable Integer id){
-        try{
-            Events events = eventService.get(id);
-            return new ResponseEntity<Events>(events, HttpStatus.OK);
-        }catch (NoSuchElementException e){
-            return new ResponseEntity<Events>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Object> get(@PathVariable Integer id){
+
+        return ApiResponse.apiResponse("Requested event details",HttpStatus.OK,eventService.get(id));
+
+//        try{
+//            Events events = eventService.get(id);
+//            return new ResponseEntity<Events>(events, HttpStatus.OK);
+//        }catch (NoSuchElementException e){
+//            return new ResponseEntity<Events>(HttpStatus.NOT_FOUND);
+//        }
     }
 
     @PutMapping("/event/{id}")
