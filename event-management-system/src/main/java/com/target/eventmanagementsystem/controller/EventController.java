@@ -35,8 +35,14 @@ public class EventController {
     @GetMapping("/event/{id}")
     public ResponseEntity<Object> get(@PathVariable Integer id){
 
-        return ApiResponse.apiResponse("Requested event details",HttpStatus.OK,eventService.get(id));
 
+        try{
+            Events events = eventService.get(id);
+            return ApiResponse.apiResponse("Requested event details",HttpStatus.OK,eventService.get(id));
+        }catch (NoSuchElementException e){
+            return ApiResponse.apiResponse("Details not found",HttpStatus.NOT_FOUND,"");
+//            return new ResponseEntity<Events>(HttpStatus.NOT_FOUND);
+        }
 //        try{
 //            Events events = eventService.get(id);
 //            return new ResponseEntity<Events>(events, HttpStatus.OK);

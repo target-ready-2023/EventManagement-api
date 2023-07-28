@@ -34,8 +34,16 @@ public class UserController {
     @GetMapping("/user/{id}")
     public ResponseEntity<Object> get(@PathVariable Integer id){
 
-        return ApiResponse.apiResponse("Requested events details",HttpStatus.OK,userService.get(id));
 
+        try{
+            return ApiResponse.apiResponse("Requested User details",HttpStatus.OK,userService.get(id));
+
+        }
+        catch (NoSuchElementException e){
+            return ApiResponse.apiResponse("User not found",HttpStatus.NOT_FOUND,"");
+
+//            return new ResponseEntity<Users>(HttpStatus.NOT_FOUND);
+        }
 //        try{
 //            Users users = userService.get(id);
 //            return new ResponseEntity<Users>(users, HttpStatus.OK);
