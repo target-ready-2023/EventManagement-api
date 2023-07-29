@@ -1,6 +1,7 @@
 package com.target.eventmanagementsystem.controller;
 
 import com.target.eventmanagementsystem.models.Events;
+import com.target.eventmanagementsystem.payloads.ApiError;
 import com.target.eventmanagementsystem.payloads.ApiResponse;
 import com.target.eventmanagementsystem.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,33 @@ public class EventController {
     private EventService eventService;
 
     @GetMapping("/getAllEvents")
-    public ResponseEntity<Object> list(){
+    public ResponseEntity<ApiResponse<Object>> list(){
 
-        return ApiResponse.apiResponse("Requested events details",HttpStatus.OK,eventService.listall());
+        try
+        {
+            Object responseData = eventService.listall();
 
-//        return eventService.listall();
+            // Create a success response
+            ApiResponse<Object> response = new ApiResponse<>();
+            response.setStatusCode(HttpStatus.OK.value());
+            response.setStatusMessage("Success");
+            response.setData(responseData);
+
+            return ResponseEntity.ok(response);
+        }catch (Exception e) {
+            // Create an error response
+            ApiError error = new ApiError();
+            error.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            error.setMessage("Internal server error");
+
+            ApiResponse<Object> response = new ApiResponse<>();
+            response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.setStatusMessage("Error");
+            response.setError(error);
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+
     }
 
     @PostMapping("/addEvents")
@@ -35,20 +58,31 @@ public class EventController {
     @GetMapping("/event/{id}")
     public ResponseEntity<Object> get(@PathVariable Integer id){
 
+        try
+        {
+            Object responseData = eventService.get(id);
 
-        try{
-            Events events = eventService.get(id);
-            return ApiResponse.apiResponse("Requested event details",HttpStatus.OK,eventService.get(id));
-        }catch (NoSuchElementException e){
-            return ApiResponse.apiResponse("Details not found",HttpStatus.NOT_FOUND,"");
-//            return new ResponseEntity<Events>(HttpStatus.NOT_FOUND);
+            // Create a success response
+            ApiResponse<Object> response = new ApiResponse<>();
+            response.setStatusCode(HttpStatus.OK.value());
+            response.setStatusMessage("Success");
+            response.setData(responseData);
+
+            return ResponseEntity.ok(response);
+        }catch (Exception e) {
+            // Create an error response
+            ApiError error = new ApiError();
+            error.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            error.setMessage("Internal server error");
+
+            ApiResponse<Object> response = new ApiResponse<>();
+            response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.setStatusMessage("Error");
+            response.setError(error);
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
-//        try{
-//            Events events = eventService.get(id);
-//            return new ResponseEntity<Events>(events, HttpStatus.OK);
-//        }catch (NoSuchElementException e){
-//            return new ResponseEntity<Events>(HttpStatus.NOT_FOUND);
-//        }
+
     }
 
     @PutMapping("/event/{id}")
@@ -72,13 +106,38 @@ public class EventController {
 
 
     @DeleteMapping("/event/{id}")
-    public String delete(@PathVariable Integer id){
-        try{
-            Events events = eventService.get(id);
-            eventService.delete(id);
-            return "Event deleted With id "+id;
-        }catch(NoSuchElementException e){
-            return "No such event exist with id "+id;
+    public ResponseEntity<ApiResponse<Object>> deleteExampleData(@PathVariable Long id) {
+        try {
+
+            boolean deleted = eventService.delete(id);
+
+            if (deleted) {
+                ApiResponse<Object> response = new ApiResponse<>();
+                response.setStatusCode(HttpStatus.OK.value());
+                response.setStatusMessage("Success");
+                return ResponseEntity.ok(response);
+            } else {
+                ApiError error = new ApiError();
+                error.setCode(HttpStatus.NOT_FOUND.value());
+                error.setMessage("Resource not found");
+
+                ApiResponse<Object> response = new ApiResponse<>();
+                response.setStatusCode(HttpStatus.NOT_FOUND.value());
+                response.setStatusMessage("Error");
+                response.setError(error);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+        } catch (Exception e) {
+            ApiError error = new ApiError();
+            error.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            error.setMessage("Internal server error");
+
+            ApiResponse<Object> response = new ApiResponse<>();
+            response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.setStatusMessage("Error");
+            response.setError(error);
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 }

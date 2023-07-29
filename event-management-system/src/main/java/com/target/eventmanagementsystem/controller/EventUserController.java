@@ -21,8 +21,8 @@ public class EventUserController {
 
     // Register a participant for an event
     @PostMapping("/{eventId}/register")
-    public ResponseEntity<String> registerParticipant(@PathVariable int eventId, @RequestBody Users participant) {
-        boolean isRegistered = eventService.registerParticipantForEvent(eventId, participant.getId());
+    public ResponseEntity<String> registerParticipant(@PathVariable Long eventId, @RequestBody Users participant) {
+        boolean isRegistered = eventService.registerParticipantForEvent(Math.toIntExact(eventId), Math.toIntExact(participant.getId()));
         if (isRegistered) {
             return ResponseEntity.status(HttpStatus.CREATED).body("Participant registered successfully.");
         } else {
@@ -32,8 +32,8 @@ public class EventUserController {
 
     // Deregister a participant from an event
     @PostMapping("/{eventId}/deregister")
-    public ResponseEntity<String> deregisterParticipant(@PathVariable int eventId, @RequestBody Users participant) {
-        boolean isDeregistered = eventService.deregisterParticipantFromEvent(eventId, participant.getId());
+    public ResponseEntity<String> deregisterParticipant(@PathVariable Long eventId, @RequestBody Users participant) {
+        boolean isDeregistered = eventService.deregisterParticipantFromEvent(Math.toIntExact(eventId), Math.toIntExact(participant.getId()));
         if (isDeregistered) {
             return ResponseEntity.ok("Participant deregistered successfully.");
         } else {

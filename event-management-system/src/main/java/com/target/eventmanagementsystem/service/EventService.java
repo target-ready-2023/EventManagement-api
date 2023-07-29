@@ -24,7 +24,8 @@ public class EventService {
         return eventRepository.findById(id).get();
     }
 
-    public void delete(Integer id){
-        eventRepository.deleteById(id);
+    public boolean delete(Long id){
+        eventRepository.deleteById(Math.toIntExact(id));
+        return false;
     }
 }

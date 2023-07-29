@@ -1,6 +1,7 @@
 package com.target.eventmanagementsystem.controller;
 
 import com.target.eventmanagementsystem.models.Users;
+import com.target.eventmanagementsystem.payloads.ApiError;
 import com.target.eventmanagementsystem.payloads.ApiResponse;
 import com.target.eventmanagementsystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,30 @@ public class UserController {
     @GetMapping("/getAllUsers")
     public ResponseEntity<Object> list(){
 
-        return ApiResponse.apiResponse("Requested events details",HttpStatus.OK,userService.listAall());
-//       return userService.listAall();
+        try
+        {
+            Object responseData = userService.listAall();
+
+            // Create a success response
+            ApiResponse<Object> response = new ApiResponse<>();
+            response.setStatusCode(HttpStatus.OK.value());
+            response.setStatusMessage("Success");
+            response.setData(responseData);
+
+            return ResponseEntity.ok(response);
+        }catch (Exception e) {
+            // Create an error response
+            ApiError error = new ApiError();
+            error.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            error.setMessage("Internal server error");
+
+            ApiResponse<Object> response = new ApiResponse<>();
+            response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.setStatusMessage("Error");
+            response.setError(error);
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
     @PostMapping("/addUser")
@@ -34,23 +57,30 @@ public class UserController {
     @GetMapping("/user/{id}")
     public ResponseEntity<Object> get(@PathVariable Integer id){
 
+        try
+        {
+            Object responseData = userService.get(id);
+            // Create a success response
+            ApiResponse<Object> response = new ApiResponse<>();
+            response.setStatusCode(HttpStatus.OK.value());
+            response.setStatusMessage("Success");
+            response.setData(responseData);
 
-        try{
-            return ApiResponse.apiResponse("Requested User details",HttpStatus.OK,userService.get(id));
+            return ResponseEntity.ok(response);
+        }catch (Exception e) {
+            // Create an error response
+            ApiError error = new ApiError();
+            error.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            error.setMessage("Internal server error");
 
+            ApiResponse<Object> response = new ApiResponse<>();
+            response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.setStatusMessage("Error");
+            response.setError(error);
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
-        catch (NoSuchElementException e){
-            return ApiResponse.apiResponse("User not found",HttpStatus.NOT_FOUND,"");
 
-//            return new ResponseEntity<Users>(HttpStatus.NOT_FOUND);
-        }
-//        try{
-//            Users users = userService.get(id);
-//            return new ResponseEntity<Users>(users, HttpStatus.OK);
-//        }
-//        catch (NoSuchElementException e){
-//            return new ResponseEntity<Users>(HttpStatus.NOT_FOUND);
-//        }
     }
 
     @PutMapping("/user/{id}")
@@ -73,13 +103,39 @@ public class UserController {
     }
 
     @DeleteMapping("/user/{id}")
-    public String delete(@PathVariable Integer id){
-        try{
-            Users users = userService.get(id);
-            userService.delete(id);
-            return  "Deleted Student with id "+id;
-        }catch (NoSuchElementException e){
-            return "No such user with the given id "+id;
+    public ResponseEntity<Object> delete(@PathVariable("id") Long id){
+
+        try {
+            // Simulated logic to delete data based on the provided ID
+            boolean deleted = userService.delete(id);
+
+            if (deleted) {
+                ApiResponse<Object> response = new ApiResponse<>();
+                response.setStatusCode(HttpStatus.OK.value());
+                response.setStatusMessage("Success");
+                return ResponseEntity.ok(response);
+            } else {
+                ApiError error = new ApiError();
+                error.setCode(HttpStatus.NOT_FOUND.value());
+                error.setMessage("Resource not found");
+
+                ApiResponse<Object> response = new ApiResponse<>();
+                response.setStatusCode(HttpStatus.NOT_FOUND.value());
+                response.setStatusMessage("Error");
+                response.setError(error);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+        } catch (Exception e) {
+            ApiError error = new ApiError();
+            error.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            error.setMessage("Internal server error");
+
+            ApiResponse<Object> response = new ApiResponse<>();
+            response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.setStatusMessage("Error");
+            response.setError(error);
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 

@@ -3,6 +3,8 @@ package com.target.eventmanagementsystem.service;
 import com.target.eventmanagementsystem.models.Users;
 import com.target.eventmanagementsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,8 +28,11 @@ public class UserService {
         return userRepository.findById(id).get();
     }
 
-    public void delete(Integer id){
-        userRepository.deleteById(id);
+    public boolean delete(Long id) {
+
+        userRepository.deleteById(Math.toIntExact(id));
+        return true;
+
     }
 
 }
