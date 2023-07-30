@@ -59,30 +59,24 @@ public class UserService {
 
     public ApiResponse<User> updateUser(Long id, User user) {
         try {
-            // Check if the student with the given ID exists in the database
             Optional<User> optionalUser = userRepository.findById(id);
 
             if (optionalUser.isPresent()) {
-                // Student with the given ID exists
-                User existingUser = optionalUser.get();
+               User existingUser = optionalUser.get();
 
-                // Update the existing student's fields with the new data
-                existingUser.setFirstName(user.getFirstName());
+               existingUser.setFirstName(user.getFirstName());
                 existingUser.setLastName(user.getLastName());
                 existingUser.setRole(user.getRole());
                 existingUser.setEmail(user.getEmail());
                 existingUser.setGender(user.getGender());
                 existingUser.setPassword(user.getPassword());
                 existingUser.setDate(user.getDate());
-                // Add more fields to update as per your Student entity
 
-                // Save the updated student to the database
                 User updatedUser = userRepository.save(existingUser);
 
                 return new ApiResponse<>(updatedUser, "User updated successfully.");
             } else {
-                // Student with the given ID doesn't exist
-                return new ApiResponse<>(null, "User not found.");
+               return new ApiResponse<>(null, "User not found.");
             }
         } catch (Exception e) {
             return new ApiResponse<>(null, "An error occurred while updating the user data.");

@@ -58,28 +58,22 @@ public class EventService {
 
     public ApiResponse<Event> updateEvent(Long id, Event event) {
         try {
-            // Check if the student with the given ID exists in the database
             Optional<Event> optionalEvent = eventRepository.findById(id);
 
             if (optionalEvent.isPresent()) {
-                // Student with the given ID exists
+
                 Event existingEvent = optionalEvent.get();
 
-                // Update the existing student's fields with the new data
                 existingEvent.setTitle(event.getTitle());
                 existingEvent.setEventType(event.getEventType());
                 existingEvent.setDescription(event.getDescription());
                 existingEvent.setStartDate(event.getStartDate());
                 existingEvent.setEndDate(event.getEndDate());
                 existingEvent.setLastRegistrationDate(event.getLastRegistrationDate());
-                // Add more fields to update as per your Student entity
-
-                // Save the updated student to the database
                 Event updatedEvent = eventRepository.save(existingEvent);
 
                 return new ApiResponse<>(updatedEvent, "Event updated successfully.");
             } else {
-                // Student with the given ID doesn't exist
                 return new ApiResponse<>(null, "Event not found.");
             }
         } catch (Exception e) {
