@@ -1,9 +1,9 @@
 package com.target.eventmanagementsystem.service;
 
+import com.target.eventmanagementsystem.models.Event;
 import com.target.eventmanagementsystem.models.EventParticipantKey;
 import com.target.eventmanagementsystem.models.EventParticipants;
-import com.target.eventmanagementsystem.models.Events;
-import com.target.eventmanagementsystem.models.Users;
+import com.target.eventmanagementsystem.models.User;
 import com.target.eventmanagementsystem.repository.EventParRepository;
 import com.target.eventmanagementsystem.repository.EventRepository;
 import com.target.eventmanagementsystem.repository.UserRepository;
@@ -28,13 +28,13 @@ public class EventUserService {
         this.userRepository=userRepository;
     }
 
-    public boolean registerParticipantForEvent(Integer eventId, Integer userId) {
-        Optional<Events> eventOptional = eventRepository1.findById(eventId);
-        Optional<Users> userOptional = userRepository.findById(userId);
+    public boolean registerParticipantForEvent(Long eventId, Long userId) {
+        Optional<Event> eventOptional = eventRepository1.findById(eventId);
+        Optional<User> userOptional = userRepository.findById(userId);
 
         if (eventOptional.isPresent() && userOptional.isPresent()) {
-            Events event = eventOptional.get();
-            Users user = userOptional.get();
+            Event event = eventOptional.get();
+            User user = userOptional.get();
 
             EventParticipantKey key = new EventParticipantKey();
             key.setEventId(eventId);

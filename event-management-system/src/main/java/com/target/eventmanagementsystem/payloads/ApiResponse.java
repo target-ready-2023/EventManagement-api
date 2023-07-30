@@ -1,24 +1,56 @@
+//package com.target.eventmanagementsystem.payloads;
+//
+//import lombok.*;
+//import org.springframework.http.HttpStatus;
+//import org.springframework.http.ResponseEntity;
+//
+//import java.util.HashMap;
+//import java.util.Map;
+////@NoArgsConstructor
+////@AllArgsConstructor
+////@Getter
+////@Setter
+//
+//@Data
+//public class ApiResponse<T> {
+//
+//    private T data;
+//    private String error;
+//
+//    public ApiResponse(T data, String error)
+//    {
+//        data = this.data;
+//        error = this.error;
+//    }
+//
+//    public ApiResponse(String error)
+//    {
+//        error = this.error;
+//    }
+//}
+
 package com.target.eventmanagementsystem.payloads;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
-import java.util.HashMap;
-import java.util.Map;
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
 public class ApiResponse<T> {
 
-    private int statusCode;
-    private String statusMessage;
     private T data;
-    private ApiError error;
-    private Map<String, Object> metadata;
+    private String message;
 
+    public ApiResponse() {
+    }
+
+    public ApiResponse(T data) {
+        this.data = data;
+    }
+
+    public ApiResponse(T data, String message) {
+        this.data = data;
+        this.message = message;
+    }
 }

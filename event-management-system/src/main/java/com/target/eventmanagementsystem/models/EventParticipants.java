@@ -4,9 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Getter
 @Setter
 @Entity
@@ -17,12 +14,12 @@ public class EventParticipants {
     @ManyToOne
     @MapsId("userId") // Maps the userId attribute in the composite key
     @JoinColumn(name = "user_id")
-    private Users user;
+    private User user;
 
     @ManyToOne
     @MapsId("eventId") // Maps the eventId attribute in the composite key
     @JoinColumn(name = "event_id")
-    private Events event;
+    private Event event;
 
     public EventParticipantKey getId() {
         return id;
@@ -32,21 +29,21 @@ public class EventParticipants {
         this.id = id;
     }
 
-    public Users getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(Users user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
-    public Events getEvent() {
+    public Event getEvent() {
         return event;
     }
 
-    public void setEvent(Events event) {
-        this.event = event;
-    }
+    public void setEvent(Event event) {
+            this.event = event;
+        }
 
     public Integer getResult() {
         return result;
