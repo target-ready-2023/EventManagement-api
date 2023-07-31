@@ -29,7 +29,7 @@ dependencies {
 group = "com.target"
 version = "0.0.1-SNAPSHOT"
 description = "event-management-system"
-java.sourceCompatibility = JavaVersion.VERSION_1_8
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 publishing {
     publications.create<MavenPublication>("maven") {
