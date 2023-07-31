@@ -2,7 +2,7 @@ package com.target.eventmanagementsystem.service;
 
 import com.target.eventmanagementsystem.models.EventParticipantKey;
 import com.target.eventmanagementsystem.models.EventParticipants;
-import com.target.eventmanagementsystem.models.Events;
+import com.target.eventmanagementsystem.models.Event;
 import com.target.eventmanagementsystem.models.Users;
 import com.target.eventmanagementsystem.repository.EventParRepository;
 import com.target.eventmanagementsystem.repository.EventRepository;
@@ -10,6 +10,9 @@ import com.target.eventmanagementsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -28,13 +31,28 @@ public class EventUserService {
         this.userRepository=userRepository;
     }
 
-    public boolean registerParticipantForEvent(Integer eventId, Integer userId) {
-        Optional<Events> eventOptional = eventRepository1.findById(eventId);
+    public int registerParticipantForEvent(Integer eventId, Integer userId) {
+        Optional<Event> eventOptional = eventRepository1.findById(eventId);
         Optional<Users> userOptional = userRepository.findById(userId);
 
         if (eventOptional.isPresent() && userOptional.isPresent()) {
-            Events event = eventOptional.get();
+            Event event = eventOptional.get();
             Users user = userOptional.get();
+
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            Date lastDateOfRegistration;
+
+            try {
+                lastDateOfRegistration = formatter.parse(event.getLast_date_for_registration());
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+
+            Date currentDate = new Date();
+
+            if(currentDate.after(lastDateOfRegistration)){
+                return 1;
+            }
 
             EventParticipantKey key = new EventParticipantKey();
             key.setEventId(eventId);
@@ -48,10 +66,10 @@ public class EventUserService {
 
             eventRepository.save(eventParticipant);
 
-            return true;
+            return 0;
         }
 
-        return false;
+        return 2;
     }
 
 

@@ -5,11 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="849c120b-b82f-4872-bfdf-f1d0b02a1d33" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/models/Event.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/event-management-system/src/test/java/com/target/eventmanagementsystem/controller/EventControllerAcceptanceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/event-management-system/src/test/java/com/target/eventmanagementsystem/controller/EventControllerIntegrationTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/event-management-system/src/test/java/com/target/eventmanagementsystem/controller/EventControllerUnitTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/models/EventParticipantKey.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/models/EventParticipantKey.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/repository/EventParRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/repository/EventParRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-management-system/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/controller/EventController.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/controller/EventController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/controller/EventUserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/controller/EventUserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/models/EventParticipants.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/models/EventParticipants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/models/Events.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/repository/EventRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/repository/EventRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/service/EventService.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/service/EventService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/service/EventUserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/service/EventUserService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/event-management-system/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-management-system/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-management-system/target/classes/com/target/eventmanagementsystem/controller/EventController.class" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/target/classes/com/target/eventmanagementsystem/controller/EventController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-management-system/target/classes/com/target/eventmanagementsystem/controller/EventUserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/target/classes/com/target/eventmanagementsystem/controller/EventUserController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-management-system/target/classes/com/target/eventmanagementsystem/models/EventParticipants.class" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/target/classes/com/target/eventmanagementsystem/models/EventParticipants.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-management-system/target/classes/com/target/eventmanagementsystem/models/Events.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-management-system/target/classes/com/target/eventmanagementsystem/repository/EventRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/target/classes/com/target/eventmanagementsystem/repository/EventRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-management-system/target/classes/com/target/eventmanagementsystem/service/EventService.class" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/target/classes/com/target/eventmanagementsystem/service/EventService.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/event-management-system/target/classes/com/target/eventmanagementsystem/service/EventUserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/target/classes/com/target/eventmanagementsystem/service/EventUserService.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -52,13 +68,72 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;E:/Product_Management&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/Demo Projects/employee-management&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\Target MAIN\EventManagement-api\event-management-system\src\test\java\com\target\eventmanagementsystem\controller" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.EventControllerAcceptanceTest">
+    <configuration name="EventControllerAcceptanceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="event-management-system" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.target.eventmanagementsystem.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.target.eventmanagementsystem.controller" />
+      <option name="MAIN_CLASS_NAME" value="com.target.eventmanagementsystem.controller.EventControllerAcceptanceTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="EventControllerIntegrationTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="event-management-system" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.target.eventmanagementsystem.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.target.eventmanagementsystem.controller" />
+      <option name="MAIN_CLASS_NAME" value="com.target.eventmanagementsystem.controller.EventControllerIntegrationTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="EventControllerUnitTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="event-management-system" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.target.eventmanagementsystem.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.target.eventmanagementsystem.controller" />
+      <option name="MAIN_CLASS_NAME" value="com.target.eventmanagementsystem.controller.EventControllerUnitTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.EventControllerAcceptanceTest" />
+        <item itemvalue="JUnit.EventControllerIntegrationTest" />
+        <item itemvalue="JUnit.EventControllerUnitTest" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
