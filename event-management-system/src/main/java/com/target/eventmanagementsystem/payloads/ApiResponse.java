@@ -1,15 +1,13 @@
 package com.target.eventmanagementsystem.payloads;
 
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 public class ApiResponse<T> {
-
     private T data;
     private String message;
+    private boolean success;
 
     public ApiResponse() {
     }
@@ -21,5 +19,11 @@ public class ApiResponse<T> {
     public ApiResponse(T data, String message) {
         this.data = data;
         this.message = message;
+    }
+
+    public ApiResponse(boolean success, String message,T data) {
+        this.data = data;
+        this.message = message;
+        this.success = success;
     }
 }

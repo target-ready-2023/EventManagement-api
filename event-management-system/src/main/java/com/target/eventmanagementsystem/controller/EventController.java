@@ -15,52 +15,41 @@ import java.util.NoSuchElementException;
 @RestController
 @RequestMapping("api/events")
 public class EventController {
-    private final EventService eventService;
+private final EventService eventService;
 
     @Autowired
     public EventController(EventService eventService) {
         this.eventService = eventService;
     }
 
-    @PostMapping("/")
-    public ResponseEntity<ApiResponse<Event>> createEvent(@RequestBody Event event) {
-        ApiResponse<Event> response = eventService.createEvent(event);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
-
     @GetMapping("/")
     public ResponseEntity<ApiResponse<List<Event>>> getAllEvents() {
-        ApiResponse<List<Event>> response = eventService.getAllEvents();
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        List<Event> events = eventService.getAllEvents();
+        return ResponseEntity.ok(new ApiResponse<>(true, "Events retrieved successfully", events));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<Event>> getEventById(@PathVariable Long id) {
-        ApiResponse<Event> response = eventService.getEventById(id);
-        if (response.getData() != null) {
-            return ResponseEntity.ok(response);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        }
+        Event event = eventService.getEventById(id);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Event retrieved successfully", event));
+    }
+
+    @PostMapping()
+    public ResponseEntity<ApiResponse<Event>> createEvent(@RequestBody Event event) {
+        Event createdEvent = eventService.createEvent(event);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(true, "Event created successfully", createdEvent));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<Event>> updateEvent(@PathVariable Long id, @RequestBody Event event) {
-        ApiResponse<Event> response = eventService.updateEvent(id, event);
-        if (response.getData() != null) {
-            return ResponseEntity.ok(response);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        }
+        event.setId(id);
+        Event updatedEvent = eventService.updateEvent(event);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Event updated successfully", updatedEvent));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<String>> deleteEvent(@PathVariable Long id) {
-        ApiResponse<String> response = eventService.deleteEvent(id);
-        if (response.getData() != null) {
-            return ResponseEntity.ok(response);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        }
+    public ResponseEntity<ApiResponse<Void>> deleteEvent(@PathVariable Long id) {
+        eventService.deleteEvent(id);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Event deleted successfully", null));
     }
 }

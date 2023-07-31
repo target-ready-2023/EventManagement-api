@@ -1,13 +1,13 @@
 package com.target.eventmanagementsystem.service;
 
+import com.target.eventmanagementsystem.exceptions.BadRequestException;
+import com.target.eventmanagementsystem.exceptions.NotFoundException;
 import com.target.eventmanagementsystem.models.User;
-import com.target.eventmanagementsystem.payloads.ApiResponse;
 import com.target.eventmanagementsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -19,82 +19,59 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public ApiResponse<User> createUser(User user) {
-
-        try {
-            User newUser = userRepository.save(user);
-            return new ApiResponse<>(newUser, "User created successfully.");
-        } catch (Exception e) {
-            return new ApiResponse<>(null, "Failed to create a new user.");
-        }
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
-    public ApiResponse<User> getUserById(Long id) {
-        try {
-            User user = userRepository.findById(id).orElse(null);
-
-            if (user != null) {
-                return new ApiResponse<>(user, "User found.");
-            } else {
-                return new ApiResponse<>(null, "User not found.");
-            }
-        } catch (Exception e) {
-            return new ApiResponse<>(null, "An error occurred while fetching user data.");
-        }
+    public User getUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("User not found with ID: " + id));
     }
 
-    public ApiResponse<List<User>> getAllUsers() {
-        try {
-            List<User> users = userRepository.findAll();
-
-            if (!users.isEmpty()) {
-                return new ApiResponse<>(users, "Users fetched successfully.");
-            } else {
-                return new ApiResponse<>(null, "No users found.");
-            }
-        } catch (Exception e) {
-            return new ApiResponse<>(null, "An error occurred while fetching users data.");
+    public User createUser(User user) {
+        if (user.getFirstName() == null || user.getLastName().isEmpty() ||
+                user.getEmail() == null || user.getPassword().isEmpty()) {
+            throw new BadRequestException("Invalid user data. Name, email, password must be provided.");
         }
+
+        return userRepository.save(user);
     }
 
-    public ApiResponse<User> updateUser(Long id, User user) {
-        try {
-            Optional<User> optionalUser = userRepository.findById(id);
-
-            if (optionalUser.isPresent()) {
-               User existingUser = optionalUser.get();
-
-               existingUser.setFirstName(user.getFirstName());
-                existingUser.setLastName(user.getLastName());
-                existingUser.setRole(user.getRole());
-                existingUser.setEmail(user.getEmail());
-                existingUser.setGender(user.getGender());
-                existingUser.setPassword(user.getPassword());
-                existingUser.setDate(user.getDate());
-
-                User updatedUser = userRepository.save(existingUser);
-
-                return new ApiResponse<>(updatedUser, "User updated successfully.");
-            } else {
-               return new ApiResponse<>(null, "User not found.");
-            }
-        } catch (Exception e) {
-            return new ApiResponse<>(null, "An error occurred while updating the user data.");
+    public User updateUser(User user) {
+        Long userId = user.getId();
+        if (userId == null || !userRepository.existsById(userId)) {
+            throw new NotFoundException("User not found with ID: " + userId);
         }
+
+        User existingUser = userRepository.findById(userId).orElse(null);
+        if (existingUser == null) {
+            throw new NotFoundException("User not found with ID: " + userId);
+        }
+
+        if (user.getFirstName() == null || user.getFirstName().isEmpty() ||
+                user.getLastName() == null || user.getLastName().isEmpty() ||
+                user.getEmail() == null || user.getEmail().isEmpty() ||
+                user.getPassword() == null || user.getPassword().isEmpty() ) {
+            throw new BadRequestException("Invalid user data. Name, email and password must be provided.");
+        }
+
+        existingUser.setFirstName(user.getFirstName());
+        existingUser.setLastName(user.getLastName());
+        existingUser.setEmail(user.getEmail());
+        existingUser.setPassword(user.getPassword());
+        existingUser.setGender(user.getGender());
+        existingUser.setRole(user.getRole());
+        existingUser.setDate(user.getDate());
+
+        return userRepository.save(existingUser);
     }
 
-    public ApiResponse<String> deleteUser(Long id) {
-        try {
-            User existingUser = userRepository.findById(id).orElse(null);
-
-            if (existingUser != null) {
-                userRepository.delete(existingUser);
-                return new ApiResponse<>("User with ID " + id + " deleted successfully.");
-            } else {
-                return new ApiResponse<>(null, "User not found.");
-            }
-        } catch (Exception e) {
-            return new ApiResponse<>(null, "An error occurred while deleting the user.");
+    public void deleteUser(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new NotFoundException("User not found with ID: " + id);
         }
+
+        userRepository.deleteById(id);
     }
+
 }

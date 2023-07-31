@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/users")
 public class UserController {
+
     private final UserService userService;
 
     @Autowired
@@ -21,46 +22,35 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/")
-    public ResponseEntity<ApiResponse<User>> createUser(@RequestBody User user) {
-        ApiResponse<User> response = userService.createUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
-
     @GetMapping("/")
     public ResponseEntity<ApiResponse<List<User>>> getAllUsers() {
-        ApiResponse<List<User>> response = userService.getAllUsers();
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
-    @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<User>> getEventById(@PathVariable Long id) {
-        ApiResponse<User> response = userService.getUserById(id);
-        if (response.getData() != null) {
-            return ResponseEntity.ok(response);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        }
+        List<User> users = userService.getAllUsers();
+        return ResponseEntity.ok(new ApiResponse<>(true, "Users retrieved successfully", users));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<User>> getUserById(@PathVariable Long id) {
+        User user = userService.getUserById(id);
+        return ResponseEntity.ok(new ApiResponse<>(true, "User retrieved successfully", user));
+    }
+
+    @PostMapping()
+    public ResponseEntity<ApiResponse<User>> createUser(@RequestBody User user) {
+        User createdUser = userService.createUser(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(true, "User created successfully", createdUser));
+    }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<User>> updateEvent(@PathVariable Long id, @RequestBody User user) {
-        ApiResponse<User> response = userService.updateUser(id, user);
-        if (response.getData() != null) {
-            return ResponseEntity.ok(response);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        }
+    public ResponseEntity<ApiResponse<User>> updateUser(@PathVariable Long id, @RequestBody User user) {
+        user.setId(id);
+        User updatedUser = userService.updateUser(user);
+        return ResponseEntity.ok(new ApiResponse<>(true, "User updated successfully", updatedUser));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse<String>> deleteUser(@PathVariable Long id) {
-        ApiResponse<String> response = userService.deleteUser(id);
-        if (response.getData() != null) {
-            return ResponseEntity.ok(response);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        }
+    public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.ok(new ApiResponse<>(true, "User deleted successfully", null));
     }
 }
 
