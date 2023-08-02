@@ -1,0 +1,7 @@
+.DS_Store
+# IntelliJ project specific settings folder
+.idea
+# Settings and other files used by gradle to build the project
+.gradle
+# Gradle build output
+build/

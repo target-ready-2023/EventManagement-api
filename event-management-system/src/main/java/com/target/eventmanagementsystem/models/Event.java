@@ -1,15 +1,11 @@
 package com.target.eventmanagementsystem.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
+@Data
 @NoArgsConstructor
-@Getter
-@Setter
 @AllArgsConstructor
 public class Event {
 
