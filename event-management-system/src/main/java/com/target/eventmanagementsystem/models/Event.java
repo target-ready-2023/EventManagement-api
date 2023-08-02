@@ -19,13 +19,13 @@ public class Event {
 
     private String title;
 
-    private String start_date;
+    private String startDate;
 
-    private String end_date;
+    private String endDate;
 
     private String description;
 
-    private String event_type;
+    private String eventType;
 
-    private String last_date_for_registration;
+    private String lastDateForRegistration;
 }

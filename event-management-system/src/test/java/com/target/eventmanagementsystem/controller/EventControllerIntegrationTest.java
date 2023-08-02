@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.target.eventmanagementsystem.models.Event;
-import com.target.eventmanagementsystem.service.EventUserService;
+import com.target.eventmanagementsystem.service.EventParticipantService;
 import com.target.eventmanagementsystem.service.EventService;
 import com.target.eventmanagementsystem.service.UserService;
 
@@ -30,7 +30,7 @@ public class EventControllerIntegrationTest {
     private EventService eventService;
 
     @MockBean 
-    private EventUserService eventUserService;
+    private EventParticipantService eventUserService;
 
     @MockBean
     private UserService userService;
@@ -43,13 +43,13 @@ public class EventControllerIntegrationTest {
             new Event(2, "Event 2", "Description 2", "2023-7-21", "2023-7-22", "Type 2", "2023-7-20")
         );
 
-        when(eventService.listAllEvents()).thenReturn(mockEvents);
+        when(eventService.getAllEvents()).thenReturn(mockEvents);
         mockMvc.perform(MockMvcRequestBuilders.get("/events/getAllEvents"))
         .andDo(MockMvcResultHandlers.print())
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(2)));
 
-        verify(eventService).listAllEvents();
+        verify(eventService).getAllEvents();
     }
 
     @Test
@@ -57,10 +57,10 @@ public class EventControllerIntegrationTest {
         
         Event mockEvent =  new Event(1, "Event 1", "Description 1", "2023-7-19", "2023-7-20", "Type 1", "2023-7-18");
 
-        when(eventService.listEventById(1)).thenReturn(mockEvent);
+        when(eventService.getEvent(1)).thenReturn(mockEvent);
         mockMvc.perform(MockMvcRequestBuilders.get("/events/event/1"))
         .andDo(MockMvcResultHandlers.print())
         .andExpect(MockMvcResultMatchers.status().isOk());
-        verify(eventService).listEventById(1);
+        verify(eventService).getEvent(1);
     }
 }

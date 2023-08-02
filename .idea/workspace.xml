@@ -5,28 +5,34 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="849c120b-b82f-4872-bfdf-f1d0b02a1d33" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/models/Event.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/event-management-system/src/test/java/com/target/eventmanagementsystem/controller/EventControllerAcceptanceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/event-management-system/src/test/java/com/target/eventmanagementsystem/controller/EventControllerIntegrationTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/event-management-system/src/test/java/com/target/eventmanagementsystem/controller/EventControllerUnitTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/exception/EventNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/exception/UserNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/2/4/24d3e7c4c094a9e5ea26ae1c95ed609e6c107d1e" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/a/2/a2cf7c834b0c75f4ccd9443b4e3e0381ad57f9c0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/e/5/e59dad610b3a886c69be37fb09801a1284159306" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/2/4/24d3e7c4c094a9e5ea26ae1c95ed609e6c107d1e" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/a/2/a2cf7c834b0c75f4ccd9443b4e3e0381ad57f9c0" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/e/5/e59dad610b3a886c69be37fb09801a1284159306" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/index.pb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/event-management-system/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/controller/EventController.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/controller/EventController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/controller/EventUserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/controller/EventUserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/models/EventParticipants.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/models/EventParticipants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/models/Events.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/repository/EventRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/repository/EventRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/controller/EventUserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/controller/EventRegistrationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/models/Event.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/models/Event.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/models/EventParticipantKey.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/models/EventParticipantKey.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/models/EventParticipants.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/models/EventParticipant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/models/Users.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/models/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/repository/EventParRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/repository/EventParticipantRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/repository/UserRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/service/EventService.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/service/EventService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/service/EventUserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/service/EventUserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/event-management-system/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/event-management-system/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/target/classes/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/event-management-system/target/classes/com/target/eventmanagementsystem/controller/EventController.class" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/target/classes/com/target/eventmanagementsystem/controller/EventController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/event-management-system/target/classes/com/target/eventmanagementsystem/controller/EventUserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/target/classes/com/target/eventmanagementsystem/controller/EventUserController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/service/EventUserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/service/EventParticipantService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/main/java/com/target/eventmanagementsystem/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-management-system/src/test/java/com/target/eventmanagementsystem/controller/EventControllerAcceptanceTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-management-system/src/test/java/com/target/eventmanagementsystem/controller/EventControllerIntegrationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/test/java/com/target/eventmanagementsystem/controller/EventControllerIntegrationTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-management-system/src/test/java/com/target/eventmanagementsystem/controller/EventControllerUnitTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/src/test/java/com/target/eventmanagementsystem/controller/EventControllerUnitTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/event-management-system/target/classes/com/target/eventmanagementsystem/models/EventParticipants.class" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/target/classes/com/target/eventmanagementsystem/models/EventParticipants.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/event-management-system/target/classes/com/target/eventmanagementsystem/models/Events.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/event-management-system/target/classes/com/target/eventmanagementsystem/repository/EventRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/target/classes/com/target/eventmanagementsystem/repository/EventRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/event-management-system/target/classes/com/target/eventmanagementsystem/service/EventService.class" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/target/classes/com/target/eventmanagementsystem/service/EventService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/event-management-system/target/classes/com/target/eventmanagementsystem/service/EventUserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/event-management-system/target/classes/com/target/eventmanagementsystem/service/EventUserService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/event-management-system/target/test-classes/com/target/eventmanagementsystem/controller/EventControllerAcceptanceTest.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,7 +78,8 @@
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.idesettings.debugger.capture&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -80,7 +87,7 @@
       <recent name="E:\Target MAIN\EventManagement-api\event-management-system\src\test\java\com\target\eventmanagementsystem\controller" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.EventControllerAcceptanceTest">
+  <component name="RunManager">
     <configuration name="EventControllerAcceptanceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="event-management-system" />
       <extension name="coverage">

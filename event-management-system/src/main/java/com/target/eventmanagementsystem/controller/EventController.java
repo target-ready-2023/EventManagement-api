@@ -2,44 +2,37 @@ package com.target.eventmanagementsystem.controller;
 
 import com.target.eventmanagementsystem.models.Event;
 import com.target.eventmanagementsystem.service.EventService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/events")
 public class EventController {
 
-    @Autowired
+
     private final EventService eventService;
 
     public EventController(EventService eventService) {
         this.eventService = eventService;
     }
 
-    @GetMapping("/getAllEvents")
-    public List<Event> list(){
-        return eventService.listAllEvents();
+    @GetMapping()
+    public List<Event> getAllEvents(){
+        return eventService.getAllEvents();
     }
 
-    @PostMapping("/addEvents")
+    @PostMapping("/event")
     public String add(@RequestBody Event events){
         eventService.saveEvent(events);
         return  "New Event Added";
     }
 
-    @GetMapping("/event/{id}")
-    public ResponseEntity<Event> get(@PathVariable Integer id){
-        try{
-            Event events = eventService.listEventById(id);
-            return new ResponseEntity<Event>(events, HttpStatus.OK);
-        }catch (NoSuchElementException e){
-            return new ResponseEntity<Event>(HttpStatus.NOT_FOUND);
-        }
+    @GetMapping()
+    public ResponseEntity<Event> get(@PathVariable int id){
+        return new ResponseEntity<Event>(eventService.getEvent(id), HttpStatus.OK);
     }
 
 //    @PutMapping("/event/{id}")
@@ -68,13 +61,7 @@ public class EventController {
 
 
     @DeleteMapping("/event/{id}")
-    public String delete(@PathVariable Integer id){
-        try{
-            Event events = eventService.listEventById(id);
-            eventService.deleteEvent(id);
-            return "Event deleted With id " + id;
-        }catch(NoSuchElementException e){
-            return "No such event exist with id " + id;
-        }
+    public String delete(@PathVariable int id){
+        return eventService.deleteEvent(id);
     }
 }
