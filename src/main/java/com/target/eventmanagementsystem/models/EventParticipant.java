@@ -60,11 +60,11 @@
 package com.target.eventmanagementsystem.models;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @Entity
 public class EventParticipant {
     @EmbeddedId
@@ -80,40 +80,6 @@ public class EventParticipant {
     @JoinColumn(name = "event_id")
     private Event event;
 
-    public EventParticipantKey getId() {
-        return id;
+    public void setResult(Object o) {
     }
-
-    public void setId(EventParticipantKey id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Event getEvent() {
-        return event;
-    }
-
-    public void setEvent(Event event) {
-        this.event = event;
-    }
-
-    public Integer getResult() {
-        return result;
-    }
-
-    public void setResult(Integer result) {
-        this.result = result;
-    }
-
-    private Integer result;
-    // Getters and setters
-
-
 }

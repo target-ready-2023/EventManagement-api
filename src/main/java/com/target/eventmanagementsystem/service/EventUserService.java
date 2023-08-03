@@ -1,80 +1,3 @@
-//package com.target.eventmanagementsystem.service;
-//
-//import com.target.eventmanagementsystem.models.EventParticipant;
-//import com.target.eventmanagementsystem.models.EventParticipantKey;
-//import com.target.eventmanagementsystem.repository.EventParticipantRepository;
-//import com.target.eventmanagementsystem.repository.EventRepository;
-//import com.target.eventmanagementsystem.repository.UserRepository;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//
-//import java.util.Optional;
-//
-//@Service
-//public class EventUserService {
-//    @Autowired
-//    private EventParticipantRepository eventRepository;
-//    @Autowired
-//    private EventRepository eventRepository1;
-//    @Autowired
-//    private UserRepository userRepository;
-//
-//    @Autowired
-//    public EventUserService(EventParticipantRepository eventRepository, UserRepository userRepository, EventRepository eventRepository1) {
-//        this.eventRepository = eventRepository;
-//        this.eventRepository1 = eventRepository1;
-//        this.userRepository=userRepository;
-//    }
-//
-//    public boolean registerParticipantForEvent(Integer eventId, Integer userId) {
-//        Optional<Events> eventOptional = eventRepository1.findById(eventId);
-//        Optional<Users> userOptional = userRepository.findById(userId);
-//
-//        if (eventOptional.isPresent() && userOptional.isPresent()) {
-//            Events event = eventOptional.get();
-//            Users user = userOptional.get();
-//
-//            EventParticipantKey key = new EventParticipantKey();
-//            key.setEventId(eventId);
-//            key.setUserId(userId);
-//
-//            EventParticipant eventParticipant = new EventParticipant();
-//            eventParticipant.setId(key); // Set the composite key
-//            eventParticipant.setUser(user); // Set the participant
-//            eventParticipant.setEvent(event); // Set the event
-//            eventParticipant.setResult(null);
-//
-//            eventRepository.save(eventParticipant);
-//
-//            return true;
-//        }
-//
-//        return false;
-//    }
-//
-//
-//
-//    public boolean deregisterParticipantFromEvent(Integer eventId, Integer userId) {
-//        Optional<EventParticipant> eventOptional = eventRepository.findByEventIdAndUserId(eventId, userId);
-//
-//        if (eventOptional.isPresent()) {
-//            EventParticipant event = eventOptional.get();
-//            eventRepository.delete(event);
-//            return true;
-//        }
-//
-//        return false;
-//    }
-//
-//
-//
-//
-//    private boolean isUserRegistered(EventParticipant event, Integer userId) {
-//        return event.getId().getUserId().equals(userId);
-//    }
-//
-//}
-
 package com.target.eventmanagementsystem.service;
 
 import com.target.eventmanagementsystem.models.Event;
@@ -117,7 +40,6 @@ public class EventUserService {
             key.setEventId(eventId);
             key.setUserId(userId);
 
-//            EventParticipant eventParticipant = new EventParticipant();
             EventParticipant eventParticipant = new EventParticipant();
             eventParticipant.setId(key); // Set the composite key
             eventParticipant.setUser(user); // Set the participant

@@ -93,22 +93,22 @@ public class EventController {
         this.eventService = eventService;
     }
 
-    @GetMapping("/")
+    @GetMapping()
     public ResponseEntity<ApiResponse<List<Event>>> getAllEvents() {
         List<Event> events = eventService.getAllEvents();
-        return ResponseEntity.ok(new ApiResponse<>(true, "Events retrieved successfully", events));
+        return ResponseEntity.ok(new ApiResponse<>(events, "Events retrieved successfully"));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<Event>> getEventById(@PathVariable Long id) {
         Event event = eventService.getEventById(id);
-        return ResponseEntity.ok(new ApiResponse<>(true, "Event retrieved successfully", event));
+        return ResponseEntity.ok(new ApiResponse<>(event, "Event retrieved successfully"));
     }
 
     @PostMapping()
     public ResponseEntity<ApiResponse<Event>> createEvent(@RequestBody Event event) {
         Event createdEvent = eventService.createEvent(event);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(true, "Event created successfully", createdEvent));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(createdEvent, "Event created successfully"));
     }
 
     @PutMapping("/{id}")
@@ -116,12 +116,12 @@ public class EventController {
 //        event.setId(id);
         event.setId(id);
         Event updatedEvent = eventService.updateEvent(event);
-        return ResponseEntity.ok(new ApiResponse<>(true, "Event updated successfully", updatedEvent));
+        return ResponseEntity.ok(new ApiResponse<>(updatedEvent, "Event updated successfully"));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteEvent(@PathVariable Long id) {
         eventService.deleteEvent(id);
-        return ResponseEntity.ok(new ApiResponse<>(true, "Event deleted successfully", null));
+        return ResponseEntity.ok(new ApiResponse<>( null,"Event deleted successfully"));
     }
 }

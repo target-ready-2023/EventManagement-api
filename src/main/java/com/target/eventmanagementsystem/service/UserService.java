@@ -1,36 +1,3 @@
-//package com.target.eventmanagementsystem.service;
-//
-//import com.target.eventmanagementsystem.repository.UserRepository;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//
-//import java.util.List;
-//
-//@Service
-//public class UserService {
-//
-//    @Autowired
-//    private UserRepository userRepository;
-//
-//
-//    public List<Users> listAall(){
-//        return userRepository.findAll();
-//    }
-//
-//    public void save(Users users){
-//        userRepository.save(users);
-//    }
-//
-//    public Users get(Integer id){
-//        return userRepository.findById(id).get();
-//    }
-//
-//    public void delete(Integer id){
-//        userRepository.deleteById(id);
-//    }
-//
-//}
-
 package com.target.eventmanagementsystem.service;
 
 import com.target.eventmanagementsystem.exceptions.BadRequestException;
@@ -62,17 +29,14 @@ public class UserService {
     }
 
     public User createUser(User user) {
-        if (user.getFirstName() == null || user.getLastName().isEmpty() ||
-                user.getEmail() == null || user.getPassword().isEmpty()) {
-            throw new BadRequestException("Invalid user data. Name, email, password must be provided.");
-        }
-
+        validateUser(user);
         return userRepository.save(user);
     }
 
     public User updateUser(User user) {
         Long userId = user.getId();
-        if (userId == null || !userRepository.existsById(userId)) {
+
+        if (userId == null || userRepository.findById(userId) == null) {
             throw new NotFoundException("User not found with ID: " + userId);
         }
 
@@ -81,12 +45,7 @@ public class UserService {
             throw new NotFoundException("User not found with ID: " + userId);
         }
 
-        if (user.getFirstName() == null || user.getFirstName().isEmpty() ||
-                user.getLastName() == null || user.getLastName().isEmpty() ||
-                user.getEmail() == null || user.getEmail().isEmpty() ||
-                user.getPassword() == null || user.getPassword().isEmpty() ) {
-            throw new BadRequestException("Invalid user data. Name, email and password must be provided.");
-        }
+        validateUser(user);
 
         existingUser.setFirstName(user.getFirstName());
         existingUser.setLastName(user.getLastName());
@@ -105,6 +64,14 @@ public class UserService {
         }
 
         userRepository.deleteById(id);
+    }
+
+    public void validateUser(User user)
+    {
+        if (user.getFirstName() == null || user.getLastName() == null ||
+                user.getEmail() == null || user.getPassword() == null) {
+            throw new BadRequestException("Invalid user data. Name, email, password must be provided.");
+        }
     }
 
 }

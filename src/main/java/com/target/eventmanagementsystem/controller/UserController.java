@@ -94,34 +94,34 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/")
+    @GetMapping()
     public ResponseEntity<ApiResponse<List<User>>> getAllUsers() {
         List<User> users = userService.getAllUsers();
-        return ResponseEntity.ok(new ApiResponse<>(true, "Users retrieved successfully", users));
+        return ResponseEntity.ok(new ApiResponse<>(users, "Users retrieved successfully"));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<User>> getUserById(@PathVariable Long id) {
         User user = userService.getUserById(id);
-        return ResponseEntity.ok(new ApiResponse<>(true, "User retrieved successfully", user));
+        return ResponseEntity.ok(new ApiResponse<>(user, "User retrieved successfully"));
     }
 
     @PostMapping()
     public ResponseEntity<ApiResponse<User>> createUser(@RequestBody User user) {
         User createdUser = userService.createUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(true, "User created successfully", createdUser));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(createdUser, "User created successfully"));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<User>> updateUser(@PathVariable Long id, @RequestBody User user) {
         user.setId(id);
         User updatedUser = userService.updateUser(user);
-        return ResponseEntity.ok(new ApiResponse<>(true, "User updated successfully", updatedUser));
+        return ResponseEntity.ok(new ApiResponse<>(updatedUser, "User updated successfully"));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
-        return ResponseEntity.ok(new ApiResponse<>(true, "User deleted successfully", null));
+        return ResponseEntity.ok(new ApiResponse<>(null, "User deleted successfully"));
     }
 }
