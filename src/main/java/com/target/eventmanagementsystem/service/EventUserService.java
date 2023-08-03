@@ -117,13 +117,14 @@ public class EventUserService {
             key.setEventId(eventId);
             key.setUserId(userId);
 
+//            EventParticipant eventParticipant = new EventParticipant();
             EventParticipant eventParticipant = new EventParticipant();
             eventParticipant.setId(key); // Set the composite key
             eventParticipant.setUser(user); // Set the participant
             eventParticipant.setEvent(event); // Set the event
             eventParticipant.setResult(null);
 
-            eventRepository.save(eventParticipant);
+            eventParticipantRepository.save(eventParticipant);
 
             return true;
         }

@@ -113,6 +113,7 @@ public class EventController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<Event>> updateEvent(@PathVariable Long id, @RequestBody Event event) {
+//        event.setId(id);
         event.setId(id);
         Event updatedEvent = eventService.updateEvent(event);
         return ResponseEntity.ok(new ApiResponse<>(true, "Event updated successfully", updatedEvent));
