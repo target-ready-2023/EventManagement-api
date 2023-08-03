@@ -9,15 +9,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class ResourceExceptionHandler {
 
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ApiResponse<Void>> handleNotFoundException(NotFoundException ex) {
+    @ExceptionHandler(ApiException.class)
+    public ResponseEntity<ApiResponse<Void>> handleNotFoundException(ApiException ex) {
         ApiResponse<Void> response = new ApiResponse<>(null,ex.getMessage() );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
-    @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<ApiResponse<Void>> handleBadRequestException(BadRequestException ex) {
-        ApiResponse<Void> response = new ApiResponse<>(null,ex.getMessage() );
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-    }
+//    @ExceptionHandler(BadRequestException.class)
+//    public ResponseEntity<ApiResponse<Void>> handleBadRequestException(BadRequestException ex) {
+//        ApiResponse<Void> response = new ApiResponse<>(null,ex.getMessage() );
+//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+//    }
 }

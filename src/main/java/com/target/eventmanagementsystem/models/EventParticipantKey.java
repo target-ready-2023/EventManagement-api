@@ -2,9 +2,7 @@ package com.target.eventmanagementsystem.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 @Embeddable
@@ -12,6 +10,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EventParticipantKey implements Serializable {
+
     @Column(name = "user_id")
     private Long userId;
 
@@ -19,3 +18,4 @@ public class EventParticipantKey implements Serializable {
     private Long eventId;
 
 }
+
