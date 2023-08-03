@@ -5,3 +5,5 @@
 .gradle
 # Gradle build output
 build/
+
+.out
