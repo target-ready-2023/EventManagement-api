@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/user-events")
+@RequestMapping("/eventRegister")
 public class EventRegistrationController {
 
     private  EventUserService eventService;
@@ -18,7 +18,7 @@ public class EventRegistrationController {
     }
 
     // Register a participant for an event
-    @PostMapping("/{eventId}/register")
+    @PostMapping("/{eventId}/register/{userId}")
     public ResponseEntity<String> registerParticipant(@PathVariable Long eventId, @RequestBody User participant) {
         boolean isRegistered = eventService.registerParticipantForEvent(eventId, participant.getId());
         if (isRegistered) {
@@ -29,7 +29,7 @@ public class EventRegistrationController {
     }
 
     // Deregister a participant from an event
-    @PostMapping("/{eventId}/deregister")
+    @PostMapping("/{eventId}/deregister/{userId}")
     public ResponseEntity<String> deregisterParticipant(@PathVariable Long eventId, @RequestBody User participant) {
         boolean isDeregistered = eventService.deregisterParticipantFromEvent(eventId, participant.getId());
         if (isDeregistered) {

@@ -6,6 +6,8 @@ import com.target.eventmanagementsystem.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -41,7 +43,7 @@ public class EventController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<Event>> updateEvent(@PathVariable Long id, @RequestBody Event event) {
-//        event.setId(id);
+
         event.setId(id);
         Event updatedEvent = eventService.updateEvent(event);
         return ResponseEntity.ok(new ApiResponse<>(updatedEvent, "Event updated successfully"));
