@@ -39,6 +39,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.1.1")
     implementation("org.springframework.boot:spring-boot-starter-web:3.1.1")
     implementation("org.postgresql:postgresql:42.6.0")
+    implementation("org.projectlombok:lombok:1.18.20")
     testImplementation("org.springframework.boot:spring-boot-starter-test:3.1.1")
 }
 
