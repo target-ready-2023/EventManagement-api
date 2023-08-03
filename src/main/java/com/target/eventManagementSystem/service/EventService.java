@@ -1,18 +1,16 @@
-package com.target.eventManagementSystem.service.Impl;
+package com.target.eventmanagementsystem.service;
 
-import com.target.eventManagementSystem.entity.Event;
-import com.target.eventManagementSystem.exceptions.ApiException;
-import com.target.eventManagementSystem.repository.EventRepository;
+import com.target.eventmanagementsystem.exceptions.ApiException;
+import com.target.eventmanagementsystem.models.Event;
+import com.target.eventmanagementsystem.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EventService {
-
     private final EventRepository eventRepository;
 
     @Autowired
@@ -77,3 +75,4 @@ public class EventService {
     }
 
 }
+

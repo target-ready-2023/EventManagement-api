@@ -1,8 +1,8 @@
-package com.target.eventManagementSystem.service.Impl;
+package com.target.eventmanagementsystem.service;
 
-import com.target.eventManagementSystem.entity.User;
-import com.target.eventManagementSystem.exceptions.ApiException;
-import com.target.eventManagementSystem.repository.UserRepository;
+import com.target.eventmanagementsystem.exceptions.ApiException;
+import com.target.eventmanagementsystem.models.User;
+import com.target.eventmanagementsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -73,6 +73,5 @@ public class UserService {
             throw new ApiException(HttpStatus.BAD_REQUEST, "Invalid user data. Name, email and password must be provided.");
         }
     }
-
 
 }

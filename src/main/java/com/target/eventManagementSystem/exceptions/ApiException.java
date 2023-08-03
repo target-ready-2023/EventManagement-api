@@ -1,4 +1,4 @@
-package com.target.eventManagementSystem.exceptions;
+package com.target.eventmanagementsystem.exceptions;
 
 import org.springframework.http.HttpStatus;
 

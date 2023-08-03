@@ -1,14 +1,19 @@
-package com.target.eventManagementSystem.entity;
+package com.target.eventmanagementsystem.models;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Entity
-@Table(name = "event")
+@Table(name = "events")
 public class Event {
 
     @Id
@@ -20,4 +25,5 @@ public class Event {
     private String description;
     private String eventType;
     private String lastRegistrationDate;
+
 }

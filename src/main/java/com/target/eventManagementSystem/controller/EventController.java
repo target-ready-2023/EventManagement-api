@@ -1,12 +1,15 @@
-package com.target.eventManagementSystem.controller;
+package com.target.eventmanagementsystem.controller;
 
-import com.target.eventManagementSystem.entity.Event;
-import com.target.eventManagementSystem.payloads.ApiResponse;
-import com.target.eventManagementSystem.service.Impl.EventService;
+import com.target.eventmanagementsystem.models.Event;
+import com.target.eventmanagementsystem.payloads.ApiResponse;
+import com.target.eventmanagementsystem.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 

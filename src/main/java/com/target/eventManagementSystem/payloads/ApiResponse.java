@@ -1,4 +1,5 @@
-package com.target.eventManagementSystem.payloads;
+package com.target.eventmanagementsystem.payloads;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
