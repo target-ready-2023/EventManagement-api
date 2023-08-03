@@ -1,8 +1,8 @@
 package com.target.eventmanagementsystem.controller;
 
-import com.target.eventmanagementsystem.models.User;
+import com.target.eventmanagementsystem.entity.User;
 import com.target.eventmanagementsystem.payloads.ApiResponse;
-import com.target.eventmanagementsystem.service.UserService;
+import com.target.eventmanagementsystem.service.Impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,12 +1,11 @@
 package com.target.eventmanagementsystem.repository;
 
-import com.target.eventmanagementsystem.models.EventParticipantKey;
-import com.target.eventmanagementsystem.models.EventParticipant;
+import com.target.eventmanagementsystem.entity.EventParticipantKey;
+import com.target.eventmanagementsystem.entity.EventParticipant;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
 import java.util.Optional;
 
 @Repository

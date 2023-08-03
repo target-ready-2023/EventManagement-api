@@ -1,6 +1,6 @@
 package com.target.eventmanagementsystem.controller;
 
-import com.target.eventmanagementsystem.service.EventRegistrationService;
+import com.target.eventmanagementsystem.service.Impl.EventRegistrationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

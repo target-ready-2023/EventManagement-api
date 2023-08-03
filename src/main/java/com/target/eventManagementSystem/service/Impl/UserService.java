@@ -1,7 +1,7 @@
-package com.target.eventmanagementsystem.service;
+package com.target.eventmanagementsystem.service.Impl;
 
 import com.target.eventmanagementsystem.exceptions.ApiException;
-import com.target.eventmanagementsystem.models.User;
+import com.target.eventmanagementsystem.entity.User;
 import com.target.eventmanagementsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

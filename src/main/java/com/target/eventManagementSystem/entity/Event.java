@@ -1,4 +1,4 @@
-package com.target.eventmanagementsystem.models;
+package com.target.eventmanagementsystem.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
