@@ -1,8 +1,7 @@
 package com.target.eventmanagementsystem.controller;
 
-import com.target.eventmanagementsystem.models.Users;
+import com.target.eventmanagementsystem.models.User;
 import com.target.eventmanagementsystem.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,55 +13,40 @@ import java.util.NoSuchElementException;
 @RequestMapping("/users")
 public class UserController {
 
-    @Autowired
     private UserService userService;
 
-    @GetMapping("/getAllUsers")
-    public List<Users> list(){
-       return userService.listAall();
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @PostMapping("/addUser")
-    public String add(@RequestBody Users users){
-        userService.save(users);
+    @GetMapping()
+    public List<User> getAllUsers(){
+        return userService.getAllUsers();
+    }
+
+    @PostMapping()
+    public String createUser(@RequestBody User user){
+        userService.createUser(user.getId());
         return "New User Added";
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<Users> get(@PathVariable Integer id){
-        try{
-            Users users = userService.get(id);
-            return new ResponseEntity<Users>(users, HttpStatus.OK);
-        }
-        catch (NoSuchElementException e){
-            return new ResponseEntity<Users>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<User> getUser(@PathVariable int id){
+        return new ResponseEntity<User>(userService.getUser(id), HttpStatus.OK);
     }
 
     @PutMapping("/user/{id}")
-    public ResponseEntity<Users> update(@RequestBody Users users,@PathVariable Integer id){
-        try{
-            Users existinguser = userService.get(id);
-            existinguser.setFirst_name(existinguser.getFirst_name());
-            existinguser.setLast_name(existinguser.getLast_name());
-            existinguser.setGender(existinguser.getGender());
-            existinguser.setDate(existinguser.getDate());
-            existinguser.setEmail(existinguser.getEmail());
-            existinguser.setRole(existinguser.getRole());
-            existinguser.setPassword(existinguser.getPassword());
-            userService.save(existinguser);
-            return new ResponseEntity<Users>(HttpStatus.OK);
-        }
-        catch (NoSuchElementException e){
-            return new ResponseEntity<Users>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<User> updateUser(@PathVariable int id){
+
+        userService.getUser(id);
+        return new ResponseEntity<User>(HttpStatus.OK);
     }
 
     @DeleteMapping("/user/{id}")
-    public String delete(@PathVariable Integer id){
+    public String deleteUser(@PathVariable Integer id){
         try{
-            Users users = userService.get(id);
-            userService.delete(id);
+            User user = userService.getUser(id);
+            userService.deleteUser(id);
             return  "Deleted Student with id "+id;
         }catch (NoSuchElementException e){
             return "No such user with the given id "+id;

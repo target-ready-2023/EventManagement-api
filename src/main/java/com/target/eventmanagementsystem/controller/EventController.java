@@ -1,71 +1,67 @@
 package com.target.eventmanagementsystem.controller;
 
-import com.target.eventmanagementsystem.models.Events;
+import com.target.eventmanagementsystem.models.Event;
 import com.target.eventmanagementsystem.service.EventService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/events")
 public class EventController {
 
-    @Autowired
-    private EventService eventService;
 
-    @GetMapping("/getAllEvents")
-    public List<Events> list(){
-        return eventService.listall();
+    private final EventService eventService;
+
+    public EventController(EventService eventService) {
+        this.eventService = eventService;
     }
 
-    @PostMapping("/addEvents")
-    public String add(@RequestBody Events events){
-        eventService.save(events);
+    @GetMapping("/getAllEvents")
+    public List<Event> getAllEvents(){
+        return eventService.getAllEvents();
+    }
+
+    @PostMapping("/event")
+    public String add(@RequestBody Event events){
+        eventService.saveEvent(events);
         return  "New Event Added";
     }
 
-    @GetMapping("/event/{id}")
-    public ResponseEntity<Events> get(@PathVariable Integer id){
-        try{
-            Events events = eventService.get(id);
-            return new ResponseEntity<Events>(events, HttpStatus.OK);
-        }catch (NoSuchElementException e){
-            return new ResponseEntity<Events>(HttpStatus.NOT_FOUND);
-        }
+    @GetMapping()
+    public ResponseEntity<Event> get(@PathVariable int id){
+        return new ResponseEntity<Event>(eventService.getEvent(id), HttpStatus.OK);
     }
 
+//    @PutMapping("/event/{id}")
+//    public ResponseEntity<Event> update(@RequestBody Event event, @PathVariable Integer id){
+//
+//        try{
+//            Event existingEvent = eventService.listEventById(id);
+//            existingEvent.setTitle(existingEvent.getTitle());
+//            existingEvent.setEvent_type(existingEvent.getEvent_type());
+//            existingEvent.setDescription(existingEvent.getDescription());
+//            existingEvent.setStart_date(existingEvent.getStart_date());
+//            existingEvent.setEnd_date(existingEvent.getEnd_date());
+//            existingEvent.setRegister_last_date(existingEvent.getRegister_last_date());
+//            eventService.saveEvent(existingEvent);
+//            return new ResponseEntity<Event>(HttpStatus.OK);
+//        }catch (NoSuchElementException e){
+//            return new ResponseEntity<Event>(HttpStatus.NOT_FOUND);
+//        }
+//
+//    }
+
     @PutMapping("/event/{id}")
-    public ResponseEntity<Events> update(@RequestBody Events events,@PathVariable Integer id){
-
-        try{
-            Events existingEvent = eventService.get(id);
-            existingEvent.setTitle(existingEvent.getTitle());
-            existingEvent.setEvent_type(existingEvent.getEvent_type());
-            existingEvent.setDescription(existingEvent.getDescription());
-            existingEvent.setStart_date(existingEvent.getStart_date());
-            existingEvent.setEnd_date(existingEvent.getEnd_date());
-            existingEvent.setRegister_last_date(existingEvent.getRegister_last_date());
-            eventService.save(existingEvent);
-            return new ResponseEntity<Events>(HttpStatus.OK);
-        }catch (NoSuchElementException e){
-            return new ResponseEntity<Events>(HttpStatus.NOT_FOUND);
-        }
-
+    public Event update(@RequestBody Event event){
+        return eventService.saveEvent(event);
     }
 
 
     @DeleteMapping("/event/{id}")
-    public String delete(@PathVariable Integer id){
-        try{
-            Events events = eventService.get(id);
-            eventService.delete(id);
-            return "Event deleted With id "+id;
-        }catch(NoSuchElementException e){
-            return "No such event exist with id "+id;
-        }
+    public String delete(@PathVariable int id){
+        return eventService.deleteEvent(id);
     }
 }

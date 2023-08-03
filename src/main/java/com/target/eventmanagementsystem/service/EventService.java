@@ -1,30 +1,61 @@
 package com.target.eventmanagementsystem.service;
 
-import com.target.eventmanagementsystem.models.Events;
+import com.target.eventmanagementsystem.exception.EventNotFoundException;
+import com.target.eventmanagementsystem.models.Event;
 import com.target.eventmanagementsystem.repository.EventRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class EventService {
-    @Autowired
+
     private EventRepository eventRepository;
 
-    public List<Events> listall(){
+    public EventService(EventRepository eventRepository) {
+        this.eventRepository = eventRepository;
+    }
+
+    public List<Event> getAllEvents(){
         return eventRepository.findAll();
     }
 
-    public void save(Events events){
-        eventRepository.save(events);
+    public Event getEvent(int id){
+
+        Optional<Event> optionalEvent = eventRepository.findById(id);
+        if (optionalEvent.isPresent()) {
+            return optionalEvent.get();
+        } else {
+            throw new EventNotFoundException("User not found with ID: " + id);
+        }
     }
 
-    public Events get(Integer id){
-        return eventRepository.findById(id).get();
+    public Event saveEvent(Event event){
+        try{
+            Event existingEvent = getEvent(event.getId());
+            existingEvent.setTitle(event.getTitle());
+            existingEvent.setEventType(event.getEventType());
+            existingEvent.setDescription(event.getDescription());
+            existingEvent.setStartDate(event.getStartDate());
+            existingEvent.setEndDate(event.getEndDate());
+            existingEvent.setLastDateForRegistration(event.getLastDateForRegistration());
+            return eventRepository.save(event);
+        }
+        catch(NoSuchElementException e){
+            throw new EventNotFoundException("Event not present");
+        }
     }
 
-    public void delete(Integer id){
-        eventRepository.deleteById(id);
+    public String deleteEvent(int id){
+        try{
+            Event event = getEvent(id);
+            eventRepository.deleteById(id);
+            return "Event deleted with the ID " + id;
+        }catch(NoSuchElementException e){
+            return "Event with the ID " + id + " does not exist.";
+        }
     }
 }
+
