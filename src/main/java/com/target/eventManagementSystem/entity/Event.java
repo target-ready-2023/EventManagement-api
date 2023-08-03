@@ -1,31 +1,23 @@
-package com.target.eventmanagementsystem.models;
+package com.target.eventManagementSystem.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@Entity
 @NoArgsConstructor
-@Getter
-@Setter
 @AllArgsConstructor
+@Data
+@Entity
+@Table(name = "event")
 public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
+    private Long id;
     private String title;
-
     private String startDate;
-
     private String endDate;
-
     private String description;
-
     private String eventType;
-
-    private String lastDateForRegistration;
+    private String lastRegistrationDate;
 }

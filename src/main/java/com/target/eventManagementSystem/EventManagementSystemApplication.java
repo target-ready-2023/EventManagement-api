@@ -1,4 +1,4 @@
-package com.target.eventmanagementsystem;
+package com.target.eventManagementSystem;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

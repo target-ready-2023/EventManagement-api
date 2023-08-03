@@ -1,35 +1,25 @@
-package com.target.eventmanagementsystem.models;
+package com.target.eventManagementSystem.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 @Entity
-@Getter
-@Setter
-@Table(name = "tab_user")
+@Table(name = "users")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
+    private Long id;
     private String firstName;
-
     private String lastName;
-
     private String date;
-
     private String gender;
-
     private String email;
-
     private String password;
-
     private String role;
 
-    public User() {
-
-    }
 }

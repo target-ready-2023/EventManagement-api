@@ -1,7 +1,7 @@
 # Read Me First
 The following was discovered as part of building this project:
 
-* The original package name 'com.target.event-management-system' is invalid and this project uses 'com.target.eventmanagementsystem' instead.
+* The original package name 'com.target.event-management-system' is invalid and this project uses 'com.target.eventManagementSystem' instead.
 
 # Getting Started
 
