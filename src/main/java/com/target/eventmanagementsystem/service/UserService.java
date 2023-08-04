@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -34,19 +35,14 @@ public class UserService {
     }
 
     public User updateUser(User user) {
-        Long userId = user.getId();
-
-        if (userId == null || userRepository.findById(userId) == null) {
-            throw new ApiException(HttpStatus.NOT_FOUND, "User not found with ID: " + userId);
-        }
-
-        User existingUser = userRepository.findById(userId).orElse(null);
-        if (existingUser == null) {
-            new ApiException(HttpStatus.NOT_FOUND, "User not found with ID: " + userId);
-        }
-
         validateUser(user);
 
+        Optional<User> existingUserOptional = userRepository.findById(user.getId());
+        if (existingUserOptional.isEmpty()) {
+            throw new ApiException(HttpStatus.NOT_FOUND, "User not found with ID: " + user.getId());
+        }
+
+        User existingUser = existingUserOptional.get();
         existingUser.setFirstName(user.getFirstName());
         existingUser.setLastName(user.getLastName());
         existingUser.setEmail(user.getEmail());
@@ -68,6 +64,7 @@ public class UserService {
 
     public void validateUser(User user)
     {
+        if (user.getId() == null) throw new ApiException(HttpStatus.BAD_REQUEST, "UserId is null");
         if (user.getFirstName() == null || user.getLastName() == null ||
                 user.getEmail() == null || user.getPassword() == null) {
             throw new ApiException(HttpStatus.BAD_REQUEST, "Invalid user data. Name, email and password must be provided.");

@@ -1,80 +1,5 @@
 package com.target.eventmanagementsystem.service;
 
-//import com.target.eventmanagementsystem.models.Event;
-//import com.target.eventmanagementsystem.models.EventParticipant;
-//import com.target.eventmanagementsystem.models.EventParticipantKey;
-//import com.target.eventmanagementsystem.models.User;
-//import com.target.eventmanagementsystem.repository.EventParticipantRepository;
-//import com.target.eventmanagementsystem.repository.EventRepository;
-//import com.target.eventmanagementsystem.repository.UserRepository;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//
-//import java.util.Optional;
-//
-//@Service
-//public class EventRegistrationService {
-//    @Autowired
-//    private EventParticipantRepository eventParticipantRepository;
-//    @Autowired
-//    private EventRepository eventRepository;
-//    @Autowired
-//    private UserRepository userRepository;
-//
-//    @Autowired
-//    public EventRegistrationService(EventParticipantRepository eventParticipantRepository, UserRepository userRepository, EventRepository eventRepository) {
-//        this.eventRepository = eventRepository;
-//        this.eventParticipantRepository = eventParticipantRepository;
-//        this.userRepository=userRepository;
-//    }
-//
-//    public boolean registerParticipantForEvent(Long eventId, Long userId) {
-//        Optional<Event> eventOptional = eventRepository.findById(eventId);
-//        Optional<User> userOptional = userRepository.findById(userId);
-//
-//        if (eventOptional.isPresent() && userOptional.isPresent()) {
-//            Event event = eventOptional.get();
-//            User user = userOptional.get();
-//
-//            EventParticipantKey key = new EventParticipantKey();
-//            key.setEventId(eventId);
-//            key.setUserId(userId);
-//
-//            EventParticipant eventParticipant = new EventParticipant();
-//            eventParticipant.setId(key); // Set the composite key
-//            eventParticipant.setUser(user); // Set the participant
-//            eventParticipant.setEvent(event); // Set the event
-//            eventParticipant.setResult(null);
-//
-//            eventParticipantRepository.save(eventParticipant);
-//
-//            return true;
-//        }
-//
-//        return false;
-//    }
-//
-//
-//
-//    public boolean deregisterParticipantFromEvent(Long eventId, Long userId) {
-//        Optional<EventParticipant> eventOptional = eventParticipantRepository.findByEventIdAndUserId(eventId, userId);
-//
-//        if (eventOptional.isPresent()) {
-//            EventParticipant event = eventOptional.get();
-//            eventRepository.delete(event.getEvent());
-//            return true;
-//        }
-//
-//        return false;
-//    }
-//
-//
-//    private boolean isUserRegistered(EventParticipant event, Long userId) {
-//        return event.getId().getUserId().equals(userId);
-//    }
-//
-//}
-
 import com.target.eventmanagementsystem.exceptions.ApiException;
 import com.target.eventmanagementsystem.models.Event;
 import com.target.eventmanagementsystem.models.EventParticipant;
@@ -83,8 +8,6 @@ import com.target.eventmanagementsystem.models.User;
 import com.target.eventmanagementsystem.repository.EventParticipantRepository;
 import com.target.eventmanagementsystem.repository.EventRepository;
 import com.target.eventmanagementsystem.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -96,11 +19,11 @@ import java.util.Optional;
 @Service
 public class EventRegistrationService {
 
-    private EventParticipantRepository eventParticipantRepository;
+    private final EventParticipantRepository eventParticipantRepository;
 
-    private EventRepository eventRepository;
+    private final EventRepository eventRepository;
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public EventRegistrationService(EventParticipantRepository eventParticipantRepository, UserRepository userRepository, EventRepository eventRepository) {
         this.eventParticipantRepository = eventParticipantRepository;
@@ -109,54 +32,46 @@ public class EventRegistrationService {
     }
 
     public void registerParticipantForEvent(Long eventId, Long userId) {
+
         Optional<Event> eventOptional = eventRepository.findById(eventId);
-        Optional<User> userOptional = userRepository.findById(userId);
-
-        if (eventOptional.isPresent() && userOptional.isPresent()) {
-            Event event = eventOptional.get();
-            User user = userOptional.get();
-
-            checkLastDate(event);
-
-            eventParticipantRepository.save(setEventParticipant(event, user));
-        }
-        else if(!eventOptional.isPresent()){
+        if (eventOptional.isEmpty()) {
             throw new ApiException(HttpStatus.NOT_FOUND, "Event not found.");
         }
-        else if(!userOptional.isPresent()){
+
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isEmpty()) {
             throw new ApiException(HttpStatus.NOT_FOUND, "User not found.");
         }
+
+        isRegistrationClosed(eventOptional.get());
+        eventParticipantRepository.save(setEventParticipant(eventOptional.get(), userOptional.get()));
+    }
+
+    public void deRegisterParticipantFromEvent(Long eventId, Long userId) {
+
+        Optional<EventParticipant> eventParticipant = eventParticipantRepository.findByEventIdAndUserId(eventId, userId);
+        if (eventParticipant.isEmpty()) {
+            throw new ApiException(HttpStatus.NOT_FOUND, "Event or participant not found");
+        }
+
+        eventParticipantRepository.delete(eventParticipant.get());
     }
 
 
-
-    public void deregisterParticipantFromEvent(Long eventId, Long userId) {
-        Optional<EventParticipant> eventOptional = eventParticipantRepository.findByEventIdAndUserId(eventId, userId);
-
-        if(eventOptional.isPresent()) {
-            EventParticipant eventParticipant = eventOptional.get();
-            eventParticipantRepository.delete(eventParticipant);
-        }
-        else{
-            throw new RuntimeException("Event or participant not found");
-        }
-    }
-
-
-    private void checkLastDate(Event event){
+    private void isRegistrationClosed(Event event){
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         Date lastDateOfRegistration;
 
         try {
             lastDateOfRegistration = formatter.parse(event.getLastRegistrationDate());
         } catch (ParseException e) {
-            throw new RuntimeException("Wrong format of date. The actual error is " + e);
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Wrong format of date. The actual error is " + e);
         }
 
         Date currentDate = new Date();
 
         if(currentDate.after(lastDateOfRegistration)){
-            throw new RuntimeException("Registration has been closed as it is beyond last date.");
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Registration has been closed as it is beyond last date.");
         }
     }
 
