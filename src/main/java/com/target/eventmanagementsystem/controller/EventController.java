@@ -3,6 +3,7 @@ package com.target.eventmanagementsystem.controller;
 import com.target.eventmanagementsystem.models.Event;
 import com.target.eventmanagementsystem.payloads.ApiResponse;
 import com.target.eventmanagementsystem.service.EventService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +47,7 @@ public class EventController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Event>> updateEvent(@PathVariable Long id, @RequestBody Event event) {
+    public ResponseEntity<ApiResponse<Event>> updateEvent(@PathVariable Long id, @RequestBody @NotNull Event event) {
 
         event.setId(id);
         Event updatedEvent = eventService.updateEvent(event);
