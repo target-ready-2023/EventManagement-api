@@ -113,7 +113,7 @@ public class EventControllerIntegrationTest {
     }
 
     @Test
-    public void testFooDelete() throws Exception {
+    void shouldDeleteEvent() throws Exception {
         long eventId = (long) 1;
 
         doNothing().when(eventService).deleteEvent(eventId);
