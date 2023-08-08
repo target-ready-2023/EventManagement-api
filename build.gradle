@@ -40,7 +40,7 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.28'
     implementation group: 'org.apache.cxf', name: 'cxf-api', version: '2.7.18'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.15.2'
-
+    testImplementation 'org.hamcrest:hamcrest:2.2'
 }
 
 tasks.named('test') {
