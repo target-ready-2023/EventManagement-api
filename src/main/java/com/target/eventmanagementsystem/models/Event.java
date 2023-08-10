@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -20,10 +22,10 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
-    private String startDate;
-    private String endDate;
     private String description;
     private String eventType;
-    private String lastRegistrationDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private LocalDate lastRegistrationDate;
 
 }

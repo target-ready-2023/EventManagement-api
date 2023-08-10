@@ -59,4 +59,16 @@ public class EventController {
         eventService.deleteEvent(id);
         return ResponseEntity.ok(new ApiResponse<>( null,"Event deleted successfully"));
     }
+
+    @GetMapping("/upcoming")
+    public ResponseEntity<ApiResponse<List<Event>>> getUpcomingEvents() {
+        List<Event> upcomingEvents = eventService.getUpcomingEvents();
+        return ResponseEntity.ok(new ApiResponse<>(upcomingEvents, "Upcoming events retrieved successfully"));
+    }
+
+    @GetMapping("/past")
+    public ResponseEntity<ApiResponse<List<Event>>> getPastEvents() {
+        List<Event> pastEvents = eventService.getPastEvents();
+        return ResponseEntity.ok(new ApiResponse<>(pastEvents, "Past events retrieved successfully"));
+    }
 }
