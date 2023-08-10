@@ -1,7 +1,9 @@
 package com.target.eventmanagementsystem.service;
 
 import com.target.eventmanagementsystem.exceptions.ApiException;
-import com.target.eventmanagementsystem.models.*;
+import com.target.eventmanagementsystem.models.Event;
+import com.target.eventmanagementsystem.models.User;
+import com.target.eventmanagementsystem.models.Registration;
 import com.target.eventmanagementsystem.repository.EventRegistrationRepository;
 import com.target.eventmanagementsystem.repository.EventRepository;
 import com.target.eventmanagementsystem.repository.UserRepository;
