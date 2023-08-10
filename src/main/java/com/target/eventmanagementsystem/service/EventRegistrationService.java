@@ -1,91 +1,121 @@
 package com.target.eventmanagementsystem.service;
 
 import com.target.eventmanagementsystem.exceptions.ApiException;
-import com.target.eventmanagementsystem.models.Event;
-import com.target.eventmanagementsystem.models.EventParticipant;
-import com.target.eventmanagementsystem.models.EventParticipantKey;
-import com.target.eventmanagementsystem.models.User;
-import com.target.eventmanagementsystem.repository.EventParticipantRepository;
+import com.target.eventmanagementsystem.models.*;
+import com.target.eventmanagementsystem.repository.EventRegistrationRepository;
 import com.target.eventmanagementsystem.repository.EventRepository;
 import com.target.eventmanagementsystem.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class EventRegistrationService {
-
-    private final EventParticipantRepository eventParticipantRepository;
-
     private final EventRepository eventRepository;
-
     private final UserRepository userRepository;
+    private final EventRegistrationRepository registrationRepository;
 
-    public EventRegistrationService(EventParticipantRepository eventParticipantRepository, UserRepository userRepository, EventRepository eventRepository) {
-        this.eventParticipantRepository = eventParticipantRepository;
+    public EventRegistrationService(EventRepository eventRepository, UserRepository userRepository, EventRegistrationRepository registrationRepository) {
         this.eventRepository = eventRepository;
-        this.userRepository=userRepository;
+        this.userRepository = userRepository;
+        this.registrationRepository = registrationRepository;
     }
 
-    public void registerParticipantForEvent(Long eventId, Long userId) {
+    @Transactional
+    public void registerUserForEvent(Long eventId, Long userId) {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND,"Event not found with ID: " + eventId));
 
-        Optional<Event> eventOptional = eventRepository.findById(eventId);
-        if (eventOptional.isEmpty()) {
-            throw new ApiException(HttpStatus.NOT_FOUND, "Event not found.");
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND,"User not found with ID: " + userId));
+
+        if (isUserAlreadyRegistered(eventId, userId)) {
+            throw new ApiException(HttpStatus.NOT_FOUND,"User is already registered for the event.");
         }
 
-        Optional<User> userOptional = userRepository.findById(userId);
-        if (userOptional.isEmpty()) {
-            throw new ApiException(HttpStatus.NOT_FOUND, "User not found.");
+        if (!user.getRole().equalsIgnoreCase("Student")) {
+            throw new ApiException(HttpStatus.NOT_FOUND,"Only students are allowed to register for events.");
         }
 
-        isRegistrationClosed(eventOptional.get());
-        eventParticipantRepository.save(setEventParticipant(eventOptional.get(), userOptional.get()));
+        LocalDate currentDate = LocalDate.now();
+        if (event.getLastRegistrationDate().isBefore(currentDate)) {
+            throw new ApiException(HttpStatus.BAD_REQUEST,"Registration for the event is already closed.");
+        }
+
+        if (event.getStartDate().isBefore(currentDate)) {
+            throw new ApiException(HttpStatus.BAD_REQUEST,"Event has already started. Registration is closed.");
+        }
+
+        Registration registration = new Registration();
+        registration.setEventId(eventId);
+        registration.setUserId(userId);
+        registrationRepository.save(registration);
     }
 
-    public void deRegisterParticipantFromEvent(Long eventId, Long userId) {
+    @Transactional
+    public void deregisterUserFromEvent(Long eventId, Long userId) {
 
-        Optional<EventParticipant> eventParticipant = eventParticipantRepository.findByEventIdAndUserId(eventId, userId);
-        if (eventParticipant.isEmpty()) {
-            throw new ApiException(HttpStatus.NOT_FOUND, "Event or participant not found");
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "Event not found with ID: " + eventId));
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "User not found with ID: " + userId));
+
+        Registration registration = registrationRepository.findByEventIdAndUserId(eventId, userId);
+
+        if (registration == null) {
+            throw new ApiException(HttpStatus.NOT_FOUND, "User is not registered for the event.");
         }
 
-        eventParticipantRepository.delete(eventParticipant.get());
-    }
-
-
-    private void isRegistrationClosed(Event event){
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        Date lastDateOfRegistration;
-
-        try {
-            lastDateOfRegistration = formatter.parse(event.getLastRegistrationDate());
-        } catch (ParseException e) {
-            throw new ApiException(HttpStatus.BAD_REQUEST, "Wrong format of date. The actual error is " + e);
+        LocalDate currentDate = LocalDate.now();
+        if (event.getStartDate().isBefore(currentDate)) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Event has already started. Deregistration is not allowed.");
         }
 
-        Date currentDate = new Date();
-
-        if(currentDate.after(lastDateOfRegistration)){
-            throw new ApiException(HttpStatus.BAD_REQUEST, "Registration has been closed as it is beyond last date.");
-        }
+        registrationRepository.delete(registration);
     }
 
-    private EventParticipant setEventParticipant(Event event, User user){
-        EventParticipantKey key = new EventParticipantKey();
-        key.setEventId(event.getId());
-        key.setUserId(user.getId());
-
-        EventParticipant eventParticipant = new EventParticipant();
-        eventParticipant.setId(key); // Set the composite key
-        eventParticipant.setUser(user); // Set the participant
-        eventParticipant.setEvent(event); // Set the event
-        eventParticipant.setResult(0);
-
-        return eventParticipant;
+    private boolean isUserAlreadyRegistered(Long eventId, Long userId) {
+        return registrationRepository.existsByEventIdAndUserId(eventId, userId);
     }
+
+    @Transactional(readOnly = true)
+    public List<User> getUsersRegisteredForEvent(Long eventId) {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND,"Event not found with ID: " + eventId));
+
+        List<Registration> registrations = registrationRepository.findByEventId(eventId);
+        List<Long> userIds = registrations.stream().map(Registration::getUserId).collect(Collectors.toList());
+
+        return userRepository.findAllById(userIds);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Event> getAllEventsForUser(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND,"User not found with ID: " + userId));
+
+        List<Registration> registrations = registrationRepository.findByUserId(userId);
+        List<Long> eventIds = registrations.stream().map(Registration::getEventId).collect(Collectors.toList());
+        return eventRepository.findAllById(eventIds);
+    }
+
+    @Transactional(readOnly = true)
+    public List<User> getAllUsersForEvent(Long eventId) {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND,"Event not found with ID: " + eventId));
+
+        List<Registration> registrations = registrationRepository.findByEventId(eventId);
+        List<Long> userIds = registrations.stream().map(Registration::getUserId).collect(Collectors.toList());
+        return userRepository.findAllById(userIds);
+    }
+
 }

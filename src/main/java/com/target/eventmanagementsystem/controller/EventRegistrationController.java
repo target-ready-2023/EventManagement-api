@@ -1,13 +1,15 @@
 package com.target.eventmanagementsystem.controller;
 
+import com.target.eventmanagementsystem.models.Event;
+import com.target.eventmanagementsystem.models.Registration;
+import com.target.eventmanagementsystem.models.User;
+import com.target.eventmanagementsystem.payloads.ApiResponse;
 import com.target.eventmanagementsystem.service.EventRegistrationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/events")
@@ -19,17 +21,35 @@ public class EventRegistrationController {
         this.eventRegistrationService = eventRegistrationService;
     }
 
-    // Register a participant for an event
-    @PostMapping("/{eventId}/register/{userId}")
-    public ResponseEntity<String> registerParticipant(@PathVariable Long eventId, @RequestBody Long userId) {
-        eventRegistrationService.registerParticipantForEvent(eventId, userId);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Participant registered successfully.");
+    @PostMapping("/register")
+    public ResponseEntity<ApiResponse<String>> registerUserForEvent(@RequestBody Registration registration) {
+        eventRegistrationService.registerUserForEvent(registration.getEventId(), registration.getUserId());
+        ApiResponse<String> response = new ApiResponse<>(null,"User registered for the event successfully.");
+        return ResponseEntity.ok(response);
     }
 
-    // Deregister a participant from an event
-    @PostMapping("/{eventId}/deregister/{userId}")
-    public ResponseEntity<String> deregisterParticipant(@PathVariable Long eventId, @RequestBody Long userId) {
-        eventRegistrationService.deRegisterParticipantFromEvent(eventId, userId);
-        return ResponseEntity.ok("Participant deregistered successfully.");
+    @DeleteMapping("/deregister")
+    public ResponseEntity<ApiResponse<String>> deregisterUserFromEvent(@RequestBody Registration registration) {
+        eventRegistrationService.deregisterUserFromEvent(registration.getEventId(), registration.getUserId());
+        ApiResponse<String> response = new ApiResponse<>(null,"User deregistered for the event successfully.");
+        return ResponseEntity.ok(response);
+
     }
+
+    @GetMapping("/eventsForUser/{userId}")
+    public ResponseEntity<ApiResponse<List<Event>>> getEventsForUser(@PathVariable Long userId) {
+        List<Event> events = eventRegistrationService.getAllEventsForUser(userId);
+        String message = "Events registered by the user retrieved successfully.";
+        ApiResponse<List<Event>> response = new ApiResponse<>(events, message);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/usersForEvent/{eventId}")
+    public ResponseEntity<ApiResponse<List<User>>> getUsersForEvent(@PathVariable Long eventId) {
+        List<User> users = eventRegistrationService.getAllUsersForEvent(eventId);
+        String message = "Users registered for the event retrieved successfully.";
+        ApiResponse<List<User>> response = new ApiResponse<>(users, message);
+        return ResponseEntity.ok(response);
+    }
+
 }
