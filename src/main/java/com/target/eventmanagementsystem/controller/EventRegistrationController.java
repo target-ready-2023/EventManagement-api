@@ -21,14 +21,14 @@ public class EventRegistrationController {
 
     // Register a participant for an event
     @PostMapping("/{eventId}/register/{userId}")
-    public ResponseEntity<String> registerParticipant(@PathVariable Long eventId, @RequestBody Long userId) {
+    public ResponseEntity<String> registerParticipant(@PathVariable Long eventId, @PathVariable Long userId) {
         eventRegistrationService.registerParticipantForEvent(eventId, userId);
         return ResponseEntity.status(HttpStatus.CREATED).body("Participant registered successfully.");
     }
 
     // Deregister a participant from an event
     @PostMapping("/{eventId}/deregister/{userId}")
-    public ResponseEntity<String> deregisterParticipant(@PathVariable Long eventId, @RequestBody Long userId) {
+    public ResponseEntity<String> deregisterParticipant(@PathVariable Long eventId, @PathVariable Long userId) {
         eventRegistrationService.deRegisterParticipantFromEvent(eventId, userId);
         return ResponseEntity.ok("Participant deregistered successfully.");
     }
