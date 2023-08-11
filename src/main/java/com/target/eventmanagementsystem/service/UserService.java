@@ -111,6 +111,4 @@ public class UserService {
                                 (!existingUser.getId().equals(newUser.getId()))
                 );
     }
-
-
 }
