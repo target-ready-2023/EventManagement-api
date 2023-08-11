@@ -1,10 +1,6 @@
 package com.target.eventmanagementsystem.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,10 +19,11 @@ public class User {
     private String firstName;
     private String lastName;
     private LocalDate dob;
-    private String gender;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
     private String email;
     private String password;
-    private String role;
-
-
+    @Enumerated(EnumType.STRING)
+    private UserRoles role;
 }
+

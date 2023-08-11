@@ -4,6 +4,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class EventControllerIntegrationTest {
     @MockBean
     private EventService eventService;
 
-    @MockBean 
+    @MockBean
     private EventRegistrationService eventRegistrationService;
 
     @MockBean
@@ -47,14 +48,14 @@ public class EventControllerIntegrationTest {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    } 
+    }
 
     @Test
     void shouldGetAllEvents() throws Exception{
-        
+
         List<Event> mockEvents = Arrays.asList(
-            new Event((long) 1, "Event 1", "Description 1", "2023-7-19", "2023-7-20", "Type 1", "2023-7-18"),
-            new Event((long) 2, "Event 2", "Description 2", "2023-7-21", "2023-7-22", "Type 2", "2023-7-20")
+            new Event((long) 1, "Event 1", "Description 1", "School day", LocalDate.of(2023, 9, 20), LocalDate.of(2023, 9, 25), LocalDate.of(2023, 9, 10)),
+            new Event((long) 2, "Event 2", "Description 2", "Sports day", LocalDate.of(2023, 8, 11), LocalDate.of(2023, 8, 12), LocalDate.of(2023, 8, 11))
         );
 
         when(eventService.getAllEvents()).thenReturn(mockEvents);
@@ -68,23 +69,23 @@ public class EventControllerIntegrationTest {
 
     @Test
     void shouldGetEventById() throws Exception{
-        
-        Event mockEvent =  new Event((long) 1, "Event 1", "Description 1", "2023-7-19", "2023-7-20", "Type 1", "2023-7-18");
+
+        Event mockEvent =  new Event((long) 1, "Event 1", "Description 1", "Sports day", LocalDate.of(2023, 9, 20), LocalDate.of(2023, 9, 25), LocalDate.of(2023, 9, 15));
 
         when(eventService.getEventById((long) 1)).thenReturn(mockEvent);
         mockMvc.perform(MockMvcRequestBuilders.get("/api/events/1"))
         .andDo(MockMvcResultHandlers.print())
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.jsonPath("$.data.id").value(mockEvent.getId()));
-        
+
         verify(eventService).getEventById((long) 1);
     }
 
     @Test
     void shouldCreateEvent() throws Exception {
-        Event mockEvent =  new Event(null, "Event 1", "Description 1", "2023-7-19", "2023-7-20", "Type 1", "2023-7-18");
+        Event mockEvent =  new Event(null, "Event 1", "Description 1", "Sports day", LocalDate.of(2023, 9, 20), LocalDate.of(2023, 9, 25), LocalDate.of(2023, 9, 10));
 
-        Event createdEvent =  new Event((long) 1, "Event 1", "Description 1", "2023-7-19", "2023-7-20", "Type 1", "2023-7-18");
+        Event createdEvent =  new Event((long) 1, "Event 1", "Description 1", "School day", LocalDate.of(2023, 9, 20), LocalDate.of(2023, 9, 25), LocalDate.of(2023, 9, 10));
 
         when(eventService.createEvent(mockEvent)).thenReturn(createdEvent);
         mockMvc.perform(MockMvcRequestBuilders.post("/api/events")
@@ -99,8 +100,8 @@ public class EventControllerIntegrationTest {
     @Test
     void shouldUpdateEvent() throws Exception {
         long eventId = (long) 1;
-        Event updateEvent =  new Event(null, "Event 1", "Description 1", "2023-7-19", "2023-7-20", "Type 1", "2023-7-18");
-        Event updatedEvent =  new Event((long) 1, "Event 1", "Description 1", "2023-7-19", "2023-7-20", "Type 1", "2023-7-18");
+        Event updateEvent =  new Event(null, "Event 1", "Description 1", "Sports day", LocalDate.of(2023, 9, 20), LocalDate.of(2023, 9, 25), LocalDate.of(2023, 9, 10));
+        Event updatedEvent =  new Event((long) 1, "Event 1", "Description 1", "School day", LocalDate.of(2023, 9, 20), LocalDate.of(2023, 9, 25), LocalDate.of(2023, 9, 10));
 
         when(eventService.updateEvent(updateEvent)).thenReturn(updateEvent);
         mockMvc.perform(MockMvcRequestBuilders.put("/api/events/{eventId}",eventId)

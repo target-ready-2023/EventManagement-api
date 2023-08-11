@@ -1,7 +1,9 @@
 package com.target.eventmanagementsystem.service;
 
 import com.target.eventmanagementsystem.exceptions.ApiException;
+import com.target.eventmanagementsystem.models.Gender;
 import com.target.eventmanagementsystem.models.User;
+import com.target.eventmanagementsystem.models.UserRoles;
 import com.target.eventmanagementsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,7 +40,7 @@ public class UserService {
     public User updateUser(User user) {
         Long userId = user.getId();
 
-        if (userId == null || userRepository.findById(userId) == null) {
+        if (userId == null ) {
             throw new ApiException(HttpStatus.NOT_FOUND, "User not found with ID: " + userId);
         }
 
@@ -61,6 +63,7 @@ public class UserService {
     }
 
     public void deleteUser(Long id) {
+
         if (!userRepository.existsById(id)) {
             throw new ApiException(HttpStatus.NOT_FOUND, "User not found with ID: " + id);
         }
@@ -75,35 +78,39 @@ public class UserService {
             throw new ApiException(HttpStatus.BAD_REQUEST, "Invalid user data. Name, email and password must be provided.");
         }
 
-        // Unique user
-        if (isDuplicateUser(user)) {
-            throw new ApiException(HttpStatus.BAD_REQUEST, "Duplicate user found.");
-        }
-
-        List<String> validUserRoles = Arrays.asList("Student", "Event Admin");
-        if (!validUserRoles.contains(user.getRole())) {
-            throw new ApiException(HttpStatus.BAD_REQUEST, "Invalid user role.");
-        }
-
         // DOB should be before today's date
         if (user.getDob() == null || user.getDob().isAfter(LocalDate.now())) {
             throw new ApiException(HttpStatus.BAD_REQUEST, "Invalid date of birth.");
         }
 
-        // Gender should contain "Male", "Female" or "Other"
-        if (!user.getGender().equals("Male") && !user.getGender().equals("Female") && !user.getGender().equals("Other")) {
-            throw new ApiException(HttpStatus.BAD_REQUEST, "Invalid gender.");
+        // Gender should contain "MALE", "FEMALE" or "OTHER"
+        List<Gender> validGender = Arrays.asList(Gender.FEMALE, Gender.MALE, Gender.OTHER);
+        if (!validGender.contains(user.getGender())) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Invalid user gender.");
+        }
+
+        List<UserRoles> validUserRoles = Arrays.asList(UserRoles.STUDENT, UserRoles.ADMIN);
+        if (!validUserRoles.contains(user.getRole())) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Invalid user role.");
+        }
+
+        // Unique user
+        if (isDuplicateUser(user)) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Duplicate user found.");
         }
     }
 
     public boolean isDuplicateUser(User newUser) {
+
         List<User> existingUsers = userRepository.findByEmail(
-                newUser.getEmail() );
+                newUser.getEmail());
 
         return existingUsers.stream()
                 .anyMatch(existingUser ->
-                        !existingUser.getId().equals(newUser.getId())
+                        newUser.getId() == null ||
+                                (!existingUser.getId().equals(newUser.getId()))
                 );
     }
+
 
 }
