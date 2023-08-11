@@ -10,7 +10,6 @@ import com.target.eventmanagementsystem.repository.EventRepository;
 import com.target.eventmanagementsystem.repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +42,8 @@ public class EventRegistrationService {
             throw new ApiException(HttpStatus.NOT_FOUND,"User is already registered for the event.");
         }
 
-        if (!user.getRole().equals(UserRoles.STUDENT)) {
+
+        if (!UserRoles.STUDENT.equals(user.getRole())) {
             throw new ApiException(HttpStatus.BAD_REQUEST, "Only students are allowed to register for events.");
         }
 
@@ -74,27 +74,11 @@ public class EventRegistrationService {
     }
 
     public List<Event> getAllEventsForUser(Long userId) {
-
-        String jpql = "SELECT e FROM Event e " +
-                "INNER JOIN Registration r ON e.id = r.eventId " +
-                "WHERE r.userId = :userId";
-
-        TypedQuery<Event> query = entityManager.createQuery(jpql, Event.class);
-        query.setParameter("userId", userId);
-
-        return query.getResultList();
+        return registrationRepository.findAllEventsForUser(userId);
     }
 
     public List<User> getAllUsersForEvent(Long eventId) {
-
-        String jpql = "SELECT u FROM User u " +
-                "JOIN Registration r ON u.id = r.userId " +
-                "WHERE r.eventId = :eventId";
-
-        TypedQuery<User> query = entityManager.createQuery(jpql, User.class);
-        query.setParameter("eventId", eventId);
-
-        return query.getResultList();
+        return registrationRepository.findAllUsersForEvent(eventId);
     }
 
 }

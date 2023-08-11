@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -31,7 +30,6 @@ public class EventService {
     }
 
     public Event createEvent(Event event) {
-
         validateEvent(event);
         return eventRepository.save(event);
     }
@@ -111,8 +109,7 @@ public class EventService {
             throw new ApiException(HttpStatus.BAD_REQUEST, "Last registration date cannot be after event start date.");
         }
 
-        List<String> validEventTypes = Arrays.asList(EventTypes.SPORTS_DAY, EventTypes.SCHOOL_DAY, EventTypes.TALENT_DAY);
-
+        List<String> validEventTypes = EventTypes.EVENT_TYPES;
         if (!validEventTypes.contains(event.getEventType())) {
             throw new ApiException(HttpStatus.BAD_REQUEST, "Invalid event type.");
         }
@@ -130,7 +127,7 @@ public class EventService {
 
         return existingEvents.stream()
                 .anyMatch(existingEvent ->
-                        (newEvent.getId() == null || !existingEvent.getId().equals(newEvent.getId())) &&
+                        (!existingEvent.getId().equals(newEvent.getId())) &&
                                 existingEvent.getEndDate().isEqual(newEvent.getEndDate())
                 );
     }

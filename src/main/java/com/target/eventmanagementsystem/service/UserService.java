@@ -1,16 +1,13 @@
 package com.target.eventmanagementsystem.service;
 
 import com.target.eventmanagementsystem.exceptions.ApiException;
-import com.target.eventmanagementsystem.models.Gender;
 import com.target.eventmanagementsystem.models.User;
-import com.target.eventmanagementsystem.models.UserRoles;
 import com.target.eventmanagementsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -41,7 +38,7 @@ public class UserService {
         Long userId = user.getId();
 
         if (userId == null ) {
-            throw new ApiException(HttpStatus.NOT_FOUND, "User not found with ID: " + userId);
+            throw new ApiException(HttpStatus.NOT_FOUND, "User id must be provided.");
         }
 
         User existingUser = userRepository.findById(userId).orElse(null);
@@ -83,17 +80,6 @@ public class UserService {
             throw new ApiException(HttpStatus.BAD_REQUEST, "Invalid date of birth.");
         }
 
-        // Gender should contain "MALE", "FEMALE" or "OTHER"
-        List<Gender> validGender = Arrays.asList(Gender.FEMALE, Gender.MALE, Gender.OTHER);
-        if (!validGender.contains(user.getGender())) {
-            throw new ApiException(HttpStatus.BAD_REQUEST, "Invalid user gender.");
-        }
-
-        List<UserRoles> validUserRoles = Arrays.asList(UserRoles.STUDENT, UserRoles.ADMIN);
-        if (!validUserRoles.contains(user.getRole())) {
-            throw new ApiException(HttpStatus.BAD_REQUEST, "Invalid user role.");
-        }
-
         // Unique user
         if (isDuplicateUser(user)) {
             throw new ApiException(HttpStatus.BAD_REQUEST, "Duplicate user found.");
@@ -106,9 +92,7 @@ public class UserService {
                 newUser.getEmail());
 
         return existingUsers.stream()
-                .anyMatch(existingUser ->
-                        newUser.getId() == null ||
-                                (!existingUser.getId().equals(newUser.getId()))
+                .anyMatch(existingUser -> (!existingUser.getId().equals(newUser.getId()))
                 );
     }
 }

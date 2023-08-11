@@ -27,7 +27,6 @@ public class EventRegistrationController {
         this.eventRegistrationService = eventRegistrationService;
     }
 
-<<<<<<< HEAD
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<String>> registerUserForEvent(@RequestBody Registration registration) {
         eventRegistrationService.registerUserForEvent(registration.getEventId(), registration.getUserId());
@@ -38,23 +37,8 @@ public class EventRegistrationController {
     @DeleteMapping("/deregister")
     public ResponseEntity<ApiResponse<String>> deregisterUserFromEvent(@RequestBody Registration registration) {
         eventRegistrationService.deregisterUserFromEvent(registration.getEventId(), registration.getUserId());
-        ApiResponse<String> response = new ApiResponse<>(null,"User deregistered for the event successfully.");
+        ApiResponse<String> response = new ApiResponse<>(null, "User deregistered for the event successfully.");
         return ResponseEntity.ok(response);
-
-=======
-    // Register a participant for an event
-    @PostMapping("/{eventId}/register/{userId}")
-    public ResponseEntity<String> registerParticipant(@PathVariable Long eventId, @PathVariable Long userId) {
-        eventRegistrationService.registerParticipantForEvent(eventId, userId);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Participant registered successfully.");
-    }
-
-    // Deregister a participant from an event
-    @PostMapping("/{eventId}/deregister/{userId}")
-    public ResponseEntity<String> deregisterParticipant(@PathVariable Long eventId, @PathVariable Long userId) {
-        eventRegistrationService.deRegisterParticipantFromEvent(eventId, userId);
-        return ResponseEntity.ok("Participant deregistered successfully.");
->>>>>>> main
     }
 
     @GetMapping("/eventsForUser/{userId}")
