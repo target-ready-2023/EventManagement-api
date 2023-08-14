@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -35,26 +35,32 @@ public class UserService {
     }
 
     public User updateUser(User user) {
-        validateUser(user);
+        Long userId = user.getId();
 
-        Optional<User> existingUserOptional = userRepository.findById(user.getId());
-        if (existingUserOptional.isEmpty()) {
-            throw new ApiException(HttpStatus.NOT_FOUND, "User not found with ID: " + user.getId());
+        if (userId == null ) {
+            throw new ApiException(HttpStatus.NOT_FOUND, "User id must be provided.");
         }
 
-        User existingUser = existingUserOptional.get();
+        User existingUser = userRepository.findById(userId).orElse(null);
+        if (existingUser == null) {
+            new ApiException(HttpStatus.NOT_FOUND, "User not found with ID: " + userId);
+        }
+
+        validateUser(user);
+
         existingUser.setFirstName(user.getFirstName());
         existingUser.setLastName(user.getLastName());
         existingUser.setEmail(user.getEmail());
         existingUser.setPassword(user.getPassword());
         existingUser.setGender(user.getGender());
         existingUser.setRole(user.getRole());
-        existingUser.setDate(user.getDate());
+        existingUser.setDob(user.getDob());
 
         return userRepository.save(existingUser);
     }
 
     public void deleteUser(Long id) {
+
         if (!userRepository.existsById(id)) {
             throw new ApiException(HttpStatus.NOT_FOUND, "User not found with ID: " + id);
         }
@@ -64,11 +70,25 @@ public class UserService {
 
     public void validateUser(User user)
     {
-        if (user.getId() == null) throw new ApiException(HttpStatus.BAD_REQUEST, "UserId is null");
         if (user.getFirstName() == null || user.getLastName() == null ||
                 user.getEmail() == null || user.getPassword() == null) {
             throw new ApiException(HttpStatus.BAD_REQUEST, "Invalid user data. Name, email and password must be provided.");
         }
+
+        // DOB should be before today's date
+        if (user.getDob() == null || user.getDob().isAfter(LocalDate.now())) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Invalid date of birth.");
+        }
+
+        // Unique user
+        if (isDuplicateUser(user)) {
+            throw new ApiException(HttpStatus.BAD_REQUEST, "Duplicate user found.");
+        }
     }
 
+    public boolean isDuplicateUser(User newUser) {
+
+        List<User> existingUsers = userRepository.findByEmail(newUser.getEmail());
+        return !existingUsers.isEmpty();
+    }
 }
