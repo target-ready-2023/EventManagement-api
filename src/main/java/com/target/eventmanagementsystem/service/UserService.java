@@ -88,11 +88,7 @@ public class UserService {
 
     public boolean isDuplicateUser(User newUser) {
 
-        List<User> existingUsers = userRepository.findByEmail(
-                newUser.getEmail());
-
-        return existingUsers.stream()
-                .anyMatch(existingUser -> (!existingUser.getId().equals(newUser.getId()))
-                );
+        List<User> existingUsers = userRepository.findByEmail(newUser.getEmail());
+        return !existingUsers.isEmpty();
     }
 }

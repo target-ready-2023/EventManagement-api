@@ -109,8 +109,8 @@ public class EventService {
             throw new ApiException(HttpStatus.BAD_REQUEST, "Last registration date cannot be after event start date.");
         }
 
-        List<String> validEventTypes = EventTypes.EVENT_TYPES;
-        if (!validEventTypes.contains(event.getEventType())) {
+//        List<String> validEventTypes = ;
+        if (!EventTypes.EVENT_TYPES.contains(event.getEventType())) {
             throw new ApiException(HttpStatus.BAD_REQUEST, "Invalid event type.");
         }
 
@@ -125,11 +125,9 @@ public class EventService {
 
         List<Event> existingEvents = eventRepository.findByTitleAndStartDate(newEvent.getTitle(), newEvent.getStartDate());
 
-        return existingEvents.stream()
-                .anyMatch(existingEvent ->
-                        (!existingEvent.getId().equals(newEvent.getId())) &&
-                                existingEvent.getEndDate().isEqual(newEvent.getEndDate())
-                );
+        return existingEvents.stream().anyMatch(existingEvent ->
+                existingEvent.getEndDate().isEqual(newEvent.getEndDate())
+        );
     }
 }
 
