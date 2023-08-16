@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.http.MediaType;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.target.eventmanagementsystem.models.Event;
 import com.target.eventmanagementsystem.service.EventRegistrationService;
 import com.target.eventmanagementsystem.service.EventService;
@@ -43,6 +44,7 @@ public class EventControllerIntegrationTest {
     public static String asJsonString(final Object obj) {
         try {
             final ObjectMapper mapper = new ObjectMapper();
+            mapper.registerModule(new JavaTimeModule());
             final String jsonContent = mapper.writeValueAsString(obj);
             return jsonContent;
         } catch (Exception e) {
@@ -100,8 +102,8 @@ public class EventControllerIntegrationTest {
     @Test
     void shouldUpdateEvent() throws Exception {
         long eventId = (long) 1;
-        Event updateEvent =  new Event(null, "Event 1", "Description 1", "Sports day", LocalDate.of(2023, 9, 20), LocalDate.of(2023, 9, 25), LocalDate.of(2023, 9, 10));
-        Event updatedEvent =  new Event((long) 1, "Event 1", "Description 1", "School day", LocalDate.of(2023, 9, 20), LocalDate.of(2023, 9, 25), LocalDate.of(2023, 9, 10));
+        Event updateEvent =  new Event(null, "Event 1", "Description 1", "type 1", LocalDate.of(2023, 9, 20), LocalDate.of(2023, 9, 25), LocalDate.of(2023, 9, 10));
+        Event updatedEvent =  new Event((long) 1, "Event 1", "Description 1", "type 1", LocalDate.of(2023, 9, 20), LocalDate.of(2023, 9, 25), LocalDate.of(2023, 9, 10));
 
         when(eventService.updateEvent(updateEvent)).thenReturn(updateEvent);
         mockMvc.perform(MockMvcRequestBuilders.put("/api/events/{eventId}",eventId)
