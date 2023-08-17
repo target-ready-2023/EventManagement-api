@@ -6,3 +6,4 @@
 # Gradle build output
 build/
 
+*.iml
