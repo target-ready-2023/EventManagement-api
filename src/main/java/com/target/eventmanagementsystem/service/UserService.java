@@ -41,10 +41,8 @@ public class UserService {
             throw new ApiException(HttpStatus.NOT_FOUND, "User id must be provided.");
         }
 
-        User existingUser = userRepository.findById(userId).orElse(null);
-        if (existingUser == null) {
-            new ApiException(HttpStatus.NOT_FOUND, "User not found with ID: " + userId);
-        }
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "User not found with ID: " + userId));
 
         validateUser(user);
 

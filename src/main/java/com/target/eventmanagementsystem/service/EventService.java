@@ -121,7 +121,7 @@ public class EventService {
 
     }
 
-    private boolean isDuplicateEvent(Event newEvent) {
+    public boolean isDuplicateEvent(Event newEvent) {
 
         List<Event> existingEvents = eventRepository.findByTitleAndStartDate(newEvent.getTitle(), newEvent.getStartDate());
 
