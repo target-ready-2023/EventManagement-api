@@ -69,7 +69,7 @@ public class EventRegistrationService {
         registrationRepository.delete(registration);
     }
 
-    private boolean isUserAlreadyRegistered(Long eventId, Long userId) {
+    public boolean isUserAlreadyRegistered(Long eventId, Long userId) {
         return registrationRepository.existsByEventIdAndUserId(eventId, userId);
     }
 
