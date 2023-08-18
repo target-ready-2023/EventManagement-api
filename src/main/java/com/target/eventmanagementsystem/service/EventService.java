@@ -126,7 +126,7 @@ public class EventService {
 
     }
 
-    private boolean isDuplicateEvent(Event newEvent,String check) {
+    public boolean isDuplicateEvent(Event newEvent,String check) {
 
         if (check == "Create") {
             List<Event> existingEventsWithTitle = eventRepository.findByTitle(newEvent.getTitle());
