@@ -30,8 +30,9 @@ public class EventService {
     }
 
     public Event createEvent(Event event) {
-        validateEvent(event);
+        validateEvent(event,"Create");;
         return eventRepository.save(event);
+
     }
 
 
@@ -48,7 +49,7 @@ public class EventService {
             throw new ApiException(HttpStatus.NOT_FOUND, "Event not found with ID: " + eventId);
         }
 
-        validateEvent(event);
+        validateEvent(event,null);
 
         existingEvent.setEventType(event.getEventType());
         existingEvent.setDescription(event.getDescription());
@@ -86,7 +87,7 @@ public class EventService {
         return eventRepository.findByStartDateBeforeAndEndDateAfterOrderByStartDate(today, today);
     }
 
-    public void validateEvent(Event event)
+    public void validateEvent(Event event,String check)
     {
         if (event.getTitle() == null || event.getStartDate() == null ||
                 event.getEndDate() == null || event.getLastRegistrationDate() == null || event.getEventType() == null) {
@@ -119,36 +120,32 @@ public class EventService {
         }
 
         // Unique event
-        if (isDuplicateEvent(event)) {
+        if (isDuplicateEvent(event,check)) {
             throw new ApiException(HttpStatus.BAD_REQUEST, "Duplicate event found.");
         }
 
     }
 
-    private boolean isDuplicateEvent(Event newEvent) {
+    private boolean isDuplicateEvent(Event newEvent,String check) {
 
-//        List<Event> existingEvents = eventRepository.findByTitleAndStartDate(newEvent.getTitle(), newEvent.getStartDate());
-//
-//        return existingEvents.stream().anyMatch(existingEvent ->
-//                existingEvent.getEndDate().isEqual(newEvent.getEndDate())
-//        );
+        if (check == "Create") {
+            List<Event> existingEventsWithTitle = eventRepository.findByTitle(newEvent.getTitle());
 
-        List<Event> existingEventsWithTitle = eventRepository.findByTitle(newEvent.getTitle());
+            boolean titleDuplicate = existingEventsWithTitle.stream().anyMatch(existingEvent ->
+                    existingEvent.getStartDate().isEqual(newEvent.getStartDate()) &&
+                            existingEvent.getEndDate().isEqual(newEvent.getEndDate())
+            );
+            if (titleDuplicate) {
+                return true;
+            }
 
-        boolean titleDuplicate = existingEventsWithTitle.stream().anyMatch(existingEvent ->
-                existingEvent.getStartDate().isEqual(newEvent.getStartDate()) &&
-                        existingEvent.getEndDate().isEqual(newEvent.getEndDate())
-        );
+            List<Event> existingEventsWithStartDateAndEndDate = eventRepository.findByStartDateAndEndDate(newEvent.getStartDate(), newEvent.getEndDate());
 
-        if (titleDuplicate) {
-            return true;
+            return existingEventsWithStartDateAndEndDate.stream().anyMatch(existingEvent ->
+                    existingEvent.getTitle().equals(newEvent.getTitle())
+            );
         }
-
-        List<Event> existingEventsWithStartDateAndEndDate = eventRepository.findByStartDateAndEndDate(newEvent.getStartDate(), newEvent.getEndDate());
-
-        return existingEventsWithStartDateAndEndDate.stream().anyMatch(existingEvent ->
-                existingEvent.getTitle().equals(newEvent.getTitle())
-        );
+        return false;
     }
 }
 

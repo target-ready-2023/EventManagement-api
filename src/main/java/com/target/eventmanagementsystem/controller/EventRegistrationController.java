@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/registration")
 @CrossOrigin("http://localhost:3000")
+@RequestMapping("/api/registration")
+
 public class EventRegistrationController {
 
     private final EventRegistrationService eventRegistrationService;
