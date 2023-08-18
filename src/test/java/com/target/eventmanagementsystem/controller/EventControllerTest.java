@@ -19,6 +19,7 @@ import static com.target.eventmanagementsystem.models.EventTypes.SPORTS_DAY;
 import static com.target.eventmanagementsystem.models.EventTypes.SCHOOL_DAY;
 import static com.target.eventmanagementsystem.models.EventTypes.TALENT_DAY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 class EventControllerTest {
@@ -143,5 +144,60 @@ class EventControllerTest {
 
         // Verify that the service method was called once
         verify(eventService, times(1)).deleteEvent(eventId);
+    }
+
+    @Test
+    void testGetUpcomingEvents() {
+        List<Event> upcomingEvents = new ArrayList<>();
+        new Event(5L, "Ongoing Event 1", "Description 5", "School", LocalDate.now().plusDays(2), LocalDate.now().plusDays(5), LocalDate.now().plusDays(1));
+        new Event(6L, "Ongoing Event 2", "Description 6", "Talent", LocalDate.now().plusDays(2), LocalDate.now().plusDays(7), LocalDate.now().plusDays(1));
+
+        when(eventService.getUpcomingEvents()).thenReturn(upcomingEvents);
+
+        ResponseEntity<ApiResponse<List<Event>>> response = eventController.getUpcomingEvents();
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(upcomingEvents, response.getBody().getData());
+        assertEquals("Upcoming events retrieved successfully", response.getBody().getMessage());
+
+        verify(eventService, times(1)).getUpcomingEvents();
+    }
+
+    @Test
+    void testGetPastEvents() {
+        List<Event> pastEvents = new ArrayList<>();
+        new Event(5L, "Ongoing Event 1", "Description 5", "School", LocalDate.now().minusDays(3), LocalDate.now().minusDays(2), LocalDate.now().minusDays(4));
+        new Event(6L, "Ongoing Event 2", "Description 6", "Talent", LocalDate.now().minusDays(3), LocalDate.now().minusDays(2), LocalDate.now().minusDays(4));
+
+        when(eventService.getPastEvents()).thenReturn(pastEvents);
+
+        ResponseEntity<ApiResponse<List<Event>>> response = eventController.getPastEvents();
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(pastEvents, response.getBody().getData());
+        assertEquals("Past events retrieved successfully", response.getBody().getMessage());
+
+        verify(eventService, times(1)).getPastEvents();
+    }
+
+    @Test
+    void testGetOngoingEvents() {
+        List<Event> ongoingEvents = new ArrayList<>();
+        new Event(5L, "Ongoing Event 1", "Description 5", "School", LocalDate.now(), LocalDate.now().plusDays(5), LocalDate.now().minusDays(1));
+        new Event(6L, "Ongoing Event 2", "Description 6", "Talent", LocalDate.now(), LocalDate.now().plusDays(7), LocalDate.now().minusDays(1));
+
+
+        when(eventService.getOngoingEvents()).thenReturn(ongoingEvents);
+
+        ResponseEntity<ApiResponse<List<Event>>> response = eventController.getOngoingEvents();
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(ongoingEvents, response.getBody().getData());
+        assertEquals("Ongoing events retrieved successfully", response.getBody().getMessage());
+
+        verify(eventService, times(1)).getOngoingEvents();
     }
 }

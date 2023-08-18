@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -65,13 +66,17 @@ class EventRegistrationServiceTest {
         Long userId = 2L;
 
         when(registrationRepository.existsByEventIdAndUserId(eventId, userId)).thenReturn(true);
+        when(eventRepository.findById(eventId)).thenReturn(Optional.of(new Event()));
+        when(userRepository.findById(userId)).thenReturn(Optional.of(new User()));
+        when(eventRegistrationService.isUserAlreadyRegistered(eventId, userId)).thenReturn(true);
 
         assertThrows(ApiException.class, () -> eventRegistrationService.registerUserForEvent(eventId, userId));
+        verify(registrationRepository, never()).save(any(Registration.class));
     }
 
     @Test
     void testRegisterUserForEvent_NonStudentUser() {
-        Long eventId = 1L;
+        Long eventId = 3L;
         Long userId = 2L;
         Event event = new Event(eventId, "Event Title", "Event Description", "Sports", LocalDate.now(),
                 LocalDate.now().plusDays(1), LocalDate.now().plusDays(1));
@@ -137,6 +142,29 @@ class EventRegistrationServiceTest {
         List<User> actualUsers = eventRegistrationService.getAllUsersForEvent(eventId);
 
         assertEquals(expectedUsers, actualUsers);
+    }
+
+    @Test
+    void testRegisterUserForEvent_RegistrationClosed() {
+        Long eventId = 1L;
+        Long userId = 1L;
+        Event event = new Event();
+        User user;
+
+        event.setLastRegistrationDate(LocalDate.now().minusDays(1));
+
+
+        when(eventRepository.findById(eventId)).thenReturn(Optional.of(event));
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user=new User()));
+        user.setRole(UserRoles.STUDENT);
+
+        when(eventRegistrationService.isUserAlreadyRegistered(eventId, userId)).thenReturn(false);
+
+        ApiException exception=assertThrows(ApiException.class, () -> eventRegistrationService.registerUserForEvent(eventId, userId));
+        verify(registrationRepository, never()).save(any(Registration.class));
+
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+        assertEquals("Registration for the event is already closed.", exception.getMessage());
     }
 
 }
