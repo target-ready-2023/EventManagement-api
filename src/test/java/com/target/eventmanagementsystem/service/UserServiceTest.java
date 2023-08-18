@@ -115,12 +115,15 @@ class UserServiceTest {
 
     @Test
     void testUpdateUser_UserNotFound() {
-        User user = new User(1L, "User Not Found", "Doe", LocalDate.of(1990, 5, 15),
+        Long userId = 1L;
+        User user = new User(userId, "User Not Found", "Doe", LocalDate.of(1990, 5, 15),
                 Gender.MALE, "usernotfound@example.com", "password", UserRoles.STUDENT);
 
-        when(userRepository.findById(1L)).thenThrow(new ApiException(HttpStatus.NOT_FOUND, "User not found with ID: " + 1L));
+        when(userRepository.findById(2L)).thenReturn(Optional.empty());
 
-        assertThrows(ApiException.class, () -> userService.updateUser(user));
+        ApiException exception = assertThrows(ApiException.class, () -> userService.updateUser(user));
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
+        assertTrue(exception.getMessage().contains("User not found with ID: " + userId));
     }
 
     @Test
