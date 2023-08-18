@@ -109,6 +109,10 @@ public class EventService {
             throw new ApiException(HttpStatus.BAD_REQUEST, "Last registration date cannot be after event start date.");
         }
 
+//        if (event.getLastRegistrationDate().(event.getEndDate())) {
+//            throw new ApiException(HttpStatus.BAD_REQUEST, "Last registration date cannot be after event start date.");
+//        }
+
 //        List<String> validEventTypes = ;
         if (!EventTypes.EVENT_TYPES.contains(event.getEventType())) {
             throw new ApiException(HttpStatus.BAD_REQUEST, "Invalid event type.");
@@ -123,10 +127,27 @@ public class EventService {
 
     private boolean isDuplicateEvent(Event newEvent) {
 
-        List<Event> existingEvents = eventRepository.findByTitleAndStartDate(newEvent.getTitle(), newEvent.getStartDate());
+//        List<Event> existingEvents = eventRepository.findByTitleAndStartDate(newEvent.getTitle(), newEvent.getStartDate());
+//
+//        return existingEvents.stream().anyMatch(existingEvent ->
+//                existingEvent.getEndDate().isEqual(newEvent.getEndDate())
+//        );
 
-        return existingEvents.stream().anyMatch(existingEvent ->
-                existingEvent.getEndDate().isEqual(newEvent.getEndDate())
+        List<Event> existingEventsWithTitle = eventRepository.findByTitle(newEvent.getTitle());
+
+        boolean titleDuplicate = existingEventsWithTitle.stream().anyMatch(existingEvent ->
+                existingEvent.getStartDate().isEqual(newEvent.getStartDate()) &&
+                        existingEvent.getEndDate().isEqual(newEvent.getEndDate())
+        );
+
+        if (titleDuplicate) {
+            return true;
+        }
+
+        List<Event> existingEventsWithStartDateAndEndDate = eventRepository.findByStartDateAndEndDate(newEvent.getStartDate(), newEvent.getEndDate());
+
+        return existingEventsWithStartDateAndEndDate.stream().anyMatch(existingEvent ->
+                existingEvent.getTitle().equals(newEvent.getTitle())
         );
     }
 }
